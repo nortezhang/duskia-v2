@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Duskia - AI 陪聊</title>
+<title>Duskia</title>
 <style>
 /* ===== DESIGN TOKENS (from Figma) ===== */
 [data-theme='dark'] {
@@ -64,6 +64,7 @@
   --sp-xl: 20px;
   --sp-2xl: 24px;
   --sp-3xl: 28px;
+  --sp-4xl: 32px;
   --sp-5xl: 40px;
   --radius-pill: 40px;
   --radius-lg: 16px;
@@ -645,7 +646,6 @@ body {
 .me-profile {
   padding: 0 var(--sp-xl);
   display: flex; gap: var(--sp-lg); align-items: center;
-  margin-bottom: var(--sp-2xl);
 }
 .me-avatar-wrap { position: relative; flex-shrink: 0; }
 .me-avatar-wrap .avatar { width: 102px; height: 102px; font-size: 42px; }
@@ -657,28 +657,31 @@ body {
   font-size: 13px; cursor: pointer;
   border: 2px solid var(--bg);
 }
-.me-identity { flex: 1; display: flex; flex-direction: column; gap: var(--sp-md); }
-.me-name { font-size: 24px; font-weight: 600; letter-spacing: -0.48px; }
-.me-uid { font-size: 14px; color: var(--subtext); letter-spacing: -0.28px; }
+.me-identity { flex: 1; display: flex; flex-direction: column; gap: var(--sp-md); min-width: 0; }
+.me-acct-id { display: flex; flex-direction: column; }
+.me-name { font-size: 24px; font-weight: 600; letter-spacing: -0.48px; line-height: 1.2; }
+.me-uid { font-size: 14px; font-weight: 500; color: var(--subtext); letter-spacing: -0.28px; line-height: 1.2; }
 .me-follow { font-size: 14px; color: var(--subtext); letter-spacing: -0.28px; }
 .me-edit-btn {
-  width: 100%; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  width: auto; height: 46px;
   border-radius: var(--radius-pill);
   background: var(--bg-secondary);
   border: none; color: var(--text);
   font-size: 18px; font-weight: 600;
   letter-spacing: -0.36px; cursor: pointer;
-  margin: 0 var(--sp-xl) var(--sp-lg);
+  margin: var(--sp-3xl) var(--sp-xl) var(--sp-2xl);
 }
 .me-edit-btn:active { opacity: 0.7; }
 
-/* Figma flat list items */
+/* Figma flat list items — exact Figma: pt-20 pb-8 px-28 */
 .me-section { margin-bottom: 0; }
 .me-section-label {
   font-size: 12px; color: var(--subtext);
   text-transform: uppercase; letter-spacing: -0.24px;
   font-weight: 500;
   padding: var(--sp-xl) var(--sp-3xl) var(--sp-sm);
+  line-height: normal;
 }
 .me-menu { background: transparent; border-radius: 0; }
 .me-menu-item {
@@ -850,26 +853,26 @@ body {
   <div class="page active" id="page-login">
     <div class="login-logo">🍷</div>
     <div class="login-brand">Duskia</div>
-    <div class="login-slogan">遇见懂你的 AI 灵魂</div>
+    <div class="login-slogan">Meet your AI companion</div>
     <div class="login-buttons">
-      <button class="login-btn" onclick="handleLogin('google')"><span class="icon">G</span>Google 登录</button>
-      <button class="login-btn" onclick="handleLogin('apple')"><span class="icon">🍎</span>Apple 登录</button>
+      <button class="login-btn" onclick="handleLogin('google')"><span class="icon">G</span>Continue with Google</button>
+      <button class="login-btn" onclick="handleLogin('apple')"><span class="icon">🍎</span>Continue with Apple</button>
     </div>
-    <div class="login-terms">登录即表示您同意我们的<br><a onclick="showLegal('terms')">服务条款</a> 和 <a onclick="showLegal('privacy')">隐私政策</a></div>
+    <div class="login-terms">By signing in, you agree to our<br><a onclick="showLegal('terms')">Terms of Service</a> and <a onclick="showLegal('privacy')">Privacy Policy</a></div>
   </div>
 
   <!-- CONSENT -->
   <div class="modal-overlay" id="modal-consent">
     <div class="modal-box">
-      <h3>用户协议与隐私政策</h3>
-      <p>感谢您选择 Duskia！在使用我们的服务前，请您仔细阅读并理解以下协议内容。</p>
+      <h3>Terms & Privacy</h3>
+      <p>Welcome to Duskia! Please review and agree to our terms before continuing.</p>
       <div style="display:flex;gap:var(--sp-lg);justify-content:center;margin-bottom:var(--sp-2xl)">
-        <a style="font-size:13px;color:var(--accent);cursor:pointer" onclick="showLegal('privacy')">隐私政策</a>
-        <a style="font-size:13px;color:var(--accent);cursor:pointer" onclick="showLegal('terms')">服务条款</a>
+        <a style="font-size:13px;color:var(--accent);cursor:pointer" onclick="showLegal('privacy')">Privacy Policy</a>
+        <a style="font-size:13px;color:var(--accent);cursor:pointer" onclick="showLegal('terms')">Terms of Service</a>
       </div>
       <div class="modal-actions">
-        <button class="btn btn-ghost" onclick="closeModal('modal-consent')">拒绝</button>
-        <button class="btn btn-primary" onclick="acceptConsent()">同意并继续</button>
+        <button class="btn btn-ghost" onclick="closeModal('modal-consent')">Decline</button>
+        <button class="btn btn-primary" onclick="acceptConsent()">Agree & Continue</button>
       </div>
     </div>
   </div>
@@ -878,7 +881,7 @@ body {
   <div class="page legal-page" id="page-privacy">
     <div class="page-header">
       <button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button>
-      <div class="title">隐私政策</div><div class="header-right"></div>
+      <div class="title">Privacy Policy</div><div class="header-right"></div>
     </div>
     <div class="page-body"><div class="legal-content">
       <h2>Duskia 隐私政策</h2><p>更新日期：2026 年 11 月 1 日</p>
@@ -894,7 +897,7 @@ body {
   <div class="page legal-page" id="page-terms">
     <div class="page-header">
       <button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button>
-      <div class="title">服务条款</div><div class="header-right"></div>
+      <div class="title">Terms of Service</div><div class="header-right"></div>
     </div>
     <div class="page-body"><div class="legal-content">
       <h2>Duskia 服务条款</h2><p>更新日期：2026 年 11 月 1 日</p>
@@ -909,7 +912,7 @@ body {
   <div class="page" id="page-loading">
     <div class="loading-page" style="flex:1;display:flex">
       <div class="loading-spinner"></div>
-      <div class="loading-text">正在登录...</div>
+      <div class="loading-text">Signing in...</div>
     </div>
   </div>
 
@@ -917,33 +920,33 @@ body {
   <div class="sheet-overlay" id="sheet-setup">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="handle"></div>
-      <div style="text-align:center;font-size:20px;font-weight:700;margin-bottom:var(--sp-2xl)">展示你的个性</div>
+      <div style="text-align:center;font-size:20px;font-weight:700;margin-bottom:var(--sp-2xl)">Show Your Style</div>
       <div style="position:relative;width:80px;margin:0 auto var(--sp-2xl)">
         <div id="setup-avatar" style="width:80px;height:80px;border-radius:50%;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid var(--divider);overflow:hidden">😊</div>
         <div onclick="showAvatarPicker()" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:2px solid var(--bg-secondary)">✏️</div>
       </div>
       <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
       <div class="form-group">
-        <label class="form-label">昵称</label>
-        <input class="form-input" id="inp-nick" type="text" placeholder="不填则自动生成" maxlength="20">
+        <label class="form-label">Nickname</label>
+        <input class="form-input" id="inp-nick" type="text" placeholder="Auto-generated if left blank" maxlength="20">
       </div>
       <div class="form-group">
-        <label class="form-label">签名</label>
-        <textarea class="form-input form-textarea" id="inp-sig" placeholder="写一句介绍自己的话..." maxlength="100"></textarea>
+        <label class="form-label">Bio</label>
+        <textarea class="form-input form-textarea" id="inp-sig" placeholder="Write something about yourself..." maxlength="100"></textarea>
       </div>
       <div class="form-group">
-        <label class="form-label">性别 <span style="color:var(--accent);font-size:11px">*必选</span></label>
+        <label class="form-label">Gender <span style="color:var(--accent);font-size:11px">*Required</span></label>
         <div class="gender-selector" id="gender-sel">
-          <div class="gender-option" data-v="male" onclick="selGender(this)">♂ 男</div>
-          <div class="gender-option" data-v="female" onclick="selGender(this)">♀ 女</div>
-          <div class="gender-option" data-v="nb" onclick="selGender(this)">⚧ 非二元</div>
+          <div class="gender-option" data-v="male" onclick="selGender(this)">♂ Male</div>
+          <div class="gender-option" data-v="female" onclick="selGender(this)">♀ Female</div>
+          <div class="gender-option" data-v="nb" onclick="selGender(this)">⚧ Non-binary</div>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label">生日 <span style="color:var(--subtext);font-size:11px">须年满18岁</span></label>
-        <input class="form-input" id="inp-bday" type="text" placeholder="选择你的生日（选填）" readonly onclick="showBdayPicker()">
+        <label class="form-label">Birthday <span style="color:var(--subtext);font-size:11px">Must be 18+</span></label>
+        <input class="form-input" id="inp-bday" type="text" placeholder="Select birthday (optional)" readonly onclick="showBdayPicker()">
       </div>
-      <button class="btn btn-primary" style="width:100%;margin-top:var(--sp-md)" onclick="finishSetup()">完成设置</button>
+      <button class="btn btn-primary" style="width:100%;margin-top:var(--sp-md)" onclick="finishSetup()">Complete Setup</button>
     </div>
   </div>
 
@@ -972,8 +975,8 @@ body {
           <h1>Messages</h1>
         </div>
         <div class="chat-segments">
-          <div class="chat-seg active" onclick="switchSeg(this,'recent')">最近</div>
-          <div class="chat-seg" onclick="switchSeg(this,'viewed')">看过</div>
+          <div class="chat-seg active" onclick="switchSeg(this,'recent')">Recent</div>
+          <div class="chat-seg" onclick="switchSeg(this,'viewed')">Viewed</div>
         </div>
         <div class="page-body" id="chat-list-body" style="flex:1">
           <div id="cl-loading" style="display:none">
@@ -981,13 +984,13 @@ body {
             <div class="sk-chat"><div class="sk-av skeleton"></div><div class="sk-ct"><div class="sk-nm skeleton"></div><div class="sk-tx skeleton"></div></div></div>
           </div>
           <div id="cl-empty" class="empty-state" style="display:none">
-            <div class="e-icon">💬</div><div class="e-title">还没有聊天记录</div>
-            <div class="e-desc">去发现页找一个 AI 角色<br>开始你的第一次对话吧</div>
-            <button class="btn btn-primary" onclick="switchTab('discover')">去发现</button>
+            <div class="e-icon">💬</div><div class="e-title">No messages yet</div>
+            <div class="e-desc">Find an AI character on Discover<br>and start your first conversation</div>
+            <button class="btn btn-primary" onclick="switchTab('discover')">Discover</button>
           </div>
           <div id="cl-viewed-empty" class="empty-state" style="display:none">
-            <div class="e-icon">👀</div><div class="e-title">还没有看过角色</div>
-            <div class="e-desc">去发现页浏览 AI 角色</div>
+            <div class="e-icon">👀</div><div class="e-title">No viewed characters</div>
+            <div class="e-desc">Browse AI characters on Discover</div>
           </div>
           <div id="chat-list"></div>
         </div>
@@ -1007,9 +1010,11 @@ body {
               <div class="emoji-edit" onclick="openEdit()">✏️</div>
             </div>
             <div class="me-identity">
-              <div class="me-name" id="me-name">用户</div>
-              <div class="me-uid" id="me-uid">ID: 10086</div>
-              <div class="me-follow" id="me-sig">这个人很懒，什么都没写~</div>
+              <div class="me-acct-id">
+                <div class="me-name" id="me-name">User</div>
+                <div class="me-uid" id="me-uid">ID: 10086</div>
+              </div>
+              <div class="me-follow" id="me-sig">Nothing here yet~</div>
             </div>
           </div>
           <button class="me-edit-btn" onclick="openEdit()">Edit Name</button>
@@ -1063,7 +1068,7 @@ body {
       </div>
       <div class="detail-content" id="d-content"></div>
     </div>
-    <div class="detail-actions"><button class="btn btn-primary" onclick="startChat()">📖 开启故事</button></div>
+    <div class="detail-actions"><button class="btn btn-primary" onclick="startChat()">📖 Start Story</button></div>
   </div>
 
   <!-- TAG PAGE -->
@@ -1088,9 +1093,9 @@ body {
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
     <div class="chat-input-bar">
-      <button class="chat-input-icon" onclick="showToast('图片功能开发中')"><svg class="icon" style="color:var(--subtext)"><use href="#i-image"/></svg></button>
-      <button class="chat-input-icon" onclick="showToast('语音功能开发中')"><svg class="icon" style="color:var(--subtext)"><use href="#i-mic"/></svg></button>
-      <textarea class="chat-input" id="chat-inp" placeholder="消息" rows="1" oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
+      <button class="chat-input-icon" onclick="showToast('Photos coming soon')"><svg class="icon" style="color:var(--subtext)"><use href="#i-image"/></svg></button>
+      <button class="chat-input-icon" onclick="showToast('Voice coming soon')"><svg class="icon" style="color:var(--subtext)"><use href="#i-mic"/></svg></button>
+      <textarea class="chat-input" id="chat-inp" placeholder="Message" rows="1" oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
       <button class="chat-send" id="chat-send" onclick="sendMsg()" disabled><svg class="icon"><use href="#i-send"/></svg></button>
     </div>
   </div>
@@ -1099,63 +1104,63 @@ body {
   <div class="sheet-overlay" id="sheet-edit" onclick="closeSheet('sheet-edit')">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="handle"></div>
-      <div style="text-align:center;font-size:18px;font-weight:700;margin-bottom:var(--sp-2xl)">编辑资料</div>
+      <div style="text-align:center;font-size:18px;font-weight:700;margin-bottom:var(--sp-2xl)">Edit Profile</div>
       <div style="position:relative;width:80px;margin:0 auto var(--sp-2xl)">
         <div id="edit-av" style="width:80px;height:80px;border-radius:50%;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:36px;border:2px solid var(--divider);overflow:hidden">😊</div>
         <div onclick="showAvatarPicker()" style="position:absolute;bottom:0;right:0;width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;border:2px solid var(--bg-secondary)">✏️</div>
       </div>
-      <div class="form-group"><label class="form-label">昵称</label><input class="form-input" id="ed-nick" type="text" maxlength="20"></div>
-      <div class="form-group"><label class="form-label">签名</label><textarea class="form-input form-textarea" id="ed-sig" maxlength="100"></textarea></div>
+      <div class="form-group"><label class="form-label">Nickname</label><input class="form-input" id="ed-nick" type="text" maxlength="20"></div>
+      <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input form-textarea" id="ed-sig" maxlength="100"></textarea></div>
       <div class="form-group">
-        <label class="form-label">性别</label>
+        <label class="form-label">Gender</label>
         <div class="gender-selector" id="ed-gender">
-          <div class="gender-option" data-v="male" onclick="selGender(this)">♂ 男</div>
-          <div class="gender-option" data-v="female" onclick="selGender(this)">♀ 女</div>
-          <div class="gender-option" data-v="nb" onclick="selGender(this)">⚧ 非二元</div>
+          <div class="gender-option" data-v="male" onclick="selGender(this)">♂ Male</div>
+          <div class="gender-option" data-v="female" onclick="selGender(this)">♀ Female</div>
+          <div class="gender-option" data-v="nb" onclick="selGender(this)">⚧ Non-binary</div>
         </div>
       </div>
-      <div class="form-group"><label class="form-label">生日</label><input class="form-input" id="ed-bday" type="text" placeholder="选择生日" readonly onclick="showBdayPicker()"></div>
-      <button class="btn btn-primary" style="width:100%;margin-top:var(--sp-md)" onclick="saveEdit()">保存</button>
+      <div class="form-group"><label class="form-label">Birthday</label><input class="form-input" id="ed-bday" type="text" placeholder="Select birthday" readonly onclick="showBdayPicker()"></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:var(--sp-md)" onclick="saveEdit()">Save</button>
     </div>
   </div>
 
-  <!-- ABOUT -->
+  <!-- ABOUT / SETTINGS -->
   <div class="page" id="page-about">
-    <div class="page-header"><button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button><div class="title">关于</div><div class="header-right"></div></div>
+    <div class="page-header"><button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button><div class="title">Settings</div><div class="header-right"></div></div>
     <div class="page-body">
-      <div class="about-info"><div class="about-logo">🍷</div><div class="about-name">Duskia</div><div class="about-ver">版本 1.0.0 (Build 2026.11)</div></div>
-      <div class="me-section-label">支持</div>
-      <div class="me-menu-item" onclick="showToast('感谢反馈！')"><span class="mi-icon"><svg class="icon"><use href="#i-feedback"/></svg></span><span class="mi-label">意见反馈</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
+      <div class="about-info"><div class="about-logo">🍷</div><div class="about-name">Duskia</div><div class="about-ver">Version 1.0.0 (Build 2026.11)</div></div>
+      <div class="me-section-label">SUPPORT</div>
+      <div class="me-menu-item" onclick="showToast('Thanks for your feedback!')"><span class="mi-icon"><svg class="icon"><use href="#i-feedback"/></svg></span><span class="mi-label">Leave a Feedback</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
       <div class="me-divider"></div>
-      <div class="me-menu-item" onclick="showLegal('terms')"><span class="mi-icon"><svg class="icon"><use href="#i-help"/></svg></span><span class="mi-label">服务条款</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
+      <div class="me-menu-item" onclick="showLegal('terms')"><span class="mi-icon"><svg class="icon"><use href="#i-help"/></svg></span><span class="mi-label">Terms of Service</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
       <div class="me-divider"></div>
-      <div class="me-menu-item" onclick="showLegal('privacy')"><span class="mi-icon"><svg class="icon"><use href="#i-help"/></svg></span><span class="mi-label">隐私政策</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
+      <div class="me-menu-item" onclick="showLegal('privacy')"><span class="mi-icon"><svg class="icon"><use href="#i-help"/></svg></span><span class="mi-label">Privacy Policy</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
       <div class="me-divider"></div>
-      <div class="me-menu-item" onclick="showToast('已是最新版本')"><span class="mi-icon"><svg class="icon"><use href="#i-globe"/></svg></span><span class="mi-label">检查更新</span><span class="mi-value">已是最新</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
-      <div class="me-section-label">危险区域</div>
-      <div class="me-menu-item danger" onclick="confirmDelAcct()"><span class="mi-icon"><svg class="icon"><use href="#i-disconnect"/></svg></span><span class="mi-label">注销账号</span></div>
+      <div class="me-menu-item" onclick="showToast('Already up to date')"><span class="mi-icon"><svg class="icon"><use href="#i-globe"/></svg></span><span class="mi-label">Check Update</span><span class="mi-value">Latest</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
+      <div class="me-section-label">OTHERS</div>
+      <div class="me-menu-item danger" onclick="confirmDelAcct()"><span class="mi-icon"><svg class="icon"><use href="#i-disconnect"/></svg></span><span class="mi-label">Delete Account</span></div>
       <div class="me-footer">
         <div class="brand">DUSKIA</div>
-        <div class="links"><span onclick="showLegal('terms')">条款</span><span class="sep">|</span><span onclick="showLegal('privacy')">隐私</span></div>
+        <div class="links"><span onclick="showLegal('terms')">Terms</span><span class="sep">|</span><span onclick="showLegal('privacy')">Privacy</span></div>
       </div>
     </div>
   </div>
 
   <!-- MODALS -->
-  <div class="modal-overlay" id="modal-logout"><div class="modal-box"><h3>退出登录</h3><p>确定要退出当前账号吗？</p><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-logout')">取消</button><button class="btn btn-danger" onclick="doLogout()">退出</button></div></div></div>
-  <div class="modal-overlay" id="modal-del"><div class="modal-box"><h3>⚠️ 注销账号</h3><p>注销后数据将被永久删除。</p><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-del')">取消</button><button class="btn btn-danger" onclick="doDelAcct()">确认注销</button></div></div></div>
-  <div class="modal-overlay" id="modal-report"><div class="modal-box"><h3>举报角色</h3><div style="margin-bottom:var(--sp-xl)"><div class="me-menu" style="background:var(--bg-input)">
-    <div class="me-menu-item" onclick="submitReport('色情低俗')"><span class="mi-label">色情低俗</span></div>
-    <div class="me-menu-item" onclick="submitReport('暴力恐怖')"><span class="mi-label">暴力恐怖</span></div>
-    <div class="me-menu-item" onclick="submitReport('侵犯版权')"><span class="mi-label">侵犯版权</span></div>
-    <div class="me-menu-item" onclick="submitReport('其他')"><span class="mi-label">其他</span></div>
-  </div></div><button class="btn btn-ghost" style="width:100%" onclick="closeModal('modal-report')">取消</button></div></div>
+  <div class="modal-overlay" id="modal-logout"><div class="modal-box"><h3>Disconnect</h3><p>Are you sure you want to log out?</p><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-logout')">Cancel</button><button class="btn btn-danger" onclick="doLogout()">Disconnect</button></div></div></div>
+  <div class="modal-overlay" id="modal-del"><div class="modal-box"><h3>⚠️ Delete Account</h3><p>All data will be permanently deleted.</p><div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal('modal-del')">Cancel</button><button class="btn btn-danger" onclick="doDelAcct()">Confirm</button></div></div></div>
+  <div class="modal-overlay" id="modal-report"><div class="modal-box"><h3>Report Character</h3><div style="margin-bottom:var(--sp-xl)"><div class="me-menu" style="background:var(--bg-input)">
+    <div class="me-menu-item" onclick="submitReport('Inappropriate')"><span class="mi-label">Inappropriate Content</span></div>
+    <div class="me-menu-item" onclick="submitReport('Violence')"><span class="mi-label">Violence or Threats</span></div>
+    <div class="me-menu-item" onclick="submitReport('Copyright')"><span class="mi-label">Copyright Violation</span></div>
+    <div class="me-menu-item" onclick="submitReport('Other')"><span class="mi-label">Other</span></div>
+  </div></div><button class="btn btn-ghost" style="width:100%" onclick="closeModal('modal-report')">Cancel</button></div></div>
 
   <!-- AVATAR PICKER SHEET -->
   <div class="sheet-overlay" id="sheet-av" onclick="closeSheet('sheet-av')">
     <div class="sheet" onclick="event.stopPropagation()">
       <div class="handle"></div>
-      <h3 style="text-align:center;margin-bottom:var(--sp-lg);font-size:16px">选择头像</h3>
+      <h3 style="text-align:center;margin-bottom:var(--sp-lg);font-size:16px">Choose Avatar</h3>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-md);margin-bottom:var(--sp-lg)">
         <div onclick="selEmoji('😊')" style="width:56px;height:56px;border-radius:50%;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;margin:0 auto">😊</div>
         <div onclick="selEmoji('😎')" style="width:56px;height:56px;border-radius:50%;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;margin:0 auto">😎</div>
@@ -1167,9 +1172,9 @@ body {
         <div onclick="selEmoji('🌟')" style="width:56px;height:56px;border-radius:50%;background:var(--bg-input);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;margin:0 auto">🌟</div>
       </div>
       <div style="border-top:1px solid var(--divider);padding-top:var(--sp-lg)">
-        <button class="btn btn-outline" style="width:100%" onclick="triggerFileUpload()">📷 从相册上传照片</button>
+        <button class="btn btn-outline" style="width:100%" onclick="triggerFileUpload()">📷 Upload from Photos</button>
       </div>
-      <button class="btn btn-ghost" style="width:100%;margin-top:var(--sp-sm)" onclick="closeSheet('sheet-av')">取消</button>
+      <button class="btn btn-ghost" style="width:100%;margin-top:var(--sp-sm)" onclick="closeSheet('sheet-av')">Cancel</button>
     </div>
   </div>
 
@@ -1178,8 +1183,8 @@ body {
     <div class="picker-box">
       <div class="picker-handle"></div>
       <div class="picker-header">
-        <span class="p-title">选择生日</span>
-        <span class="p-subtitle">须年满18周岁方可使用</span>
+        <span class="p-title">Select Birthday</span>
+        <span class="p-subtitle">Must be 18 years or older</span>
       </div>
       <div class="picker-divider"></div>
       <div class="picker-wheels">
@@ -1188,8 +1193,8 @@ body {
         <div class="picker-wheel" id="pk-day"></div>
       </div>
       <div class="picker-actions">
-        <button class="btn btn-ghost" onclick="closeBday()">取消</button>
-        <button class="btn btn-primary" onclick="confirmBday()">确认</button>
+        <button class="btn btn-ghost" onclick="closeBday()">Cancel</button>
+        <button class="btn btn-primary" onclick="confirmBday()">Confirm</button>
       </div>
     </div>
   </div>
@@ -1268,7 +1273,7 @@ function triggerFileUpload(){ closeSheet('sheet-av'); document.getElementById('a
 function handleAvatarUpload(e){
   const f=e.target.files[0]; if(!f) return;
   const r=new FileReader();
-  r.onload=ev=>{ profile.avatar=ev.target.result; profile.avType='image'; updateAvDisplays(); showToast('头像上传成功'); };
+  r.onload=ev=>{ profile.avatar=ev.target.result; profile.avType='image'; updateAvDisplays(); showToast('Avatar uploaded'); };
   r.readAsDataURL(f);
 }
 function updateAvDisplays(){
@@ -1280,10 +1285,10 @@ function updateAvDisplays(){
 }
 function selGender(el){ el.parentElement.querySelectorAll('.gender-option').forEach(o=>o.classList.remove('active')); el.classList.add('active'); profile.gender=el.dataset.v; }
 function finishSetup(){
-  if(!profile.gender){ showToast('请选择性别','error'); return; }
-  profile.nick=document.getElementById('inp-nick').value.trim()||('用户'+Math.floor(Math.random()*9000+1000));
+  if(!profile.gender){ showToast('Please select gender','error'); return; }
+  profile.nick=document.getElementById('inp-nick').value.trim()||('User'+Math.floor(Math.random()*9000+1000));
   profile.sig=document.getElementById('inp-sig').value.trim();
-  closeSheet('sheet-setup'); showToast('设置成功！'); loadDiscover();
+  closeSheet('sheet-setup'); showToast('Setup complete!'); loadDiscover();
 }
 function openEdit(){
   document.getElementById('ed-nick').value=profile.nick;
@@ -1297,13 +1302,13 @@ function openEdit(){
 }
 function saveEdit(){
   const n=document.getElementById('ed-nick').value.trim();
-  if(!n){ showToast('昵称不能为空','error'); return; }
+  if(!n){ showToast('Name cannot be empty','error'); return; }
   profile.nick=n; profile.sig=document.getElementById('ed-sig').value.trim();
-  closeSheet('sheet-edit'); showToast('保存成功'); updateMe();
+  closeSheet('sheet-edit'); showToast('Saved'); updateMe();
 }
 function updateMe(){
-  document.getElementById('me-name').textContent=profile.nick||'用户';
-  document.getElementById('me-sig').textContent=profile.sig||'这个人很懒，什么都没写~';
+  document.getElementById('me-name').textContent=profile.nick||'User';
+  document.getElementById('me-sig').textContent=profile.sig||'Nothing here yet~';
   const av=document.getElementById('me-av');
   if(profile.avType==='image') av.innerHTML=`<img src="${profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
   else av.textContent=profile.avatar;
@@ -1314,16 +1319,17 @@ let pkY=2000,pkM=1,pkD=1;
 function showBdayPicker(){
   document.getElementById('bday-picker').classList.add('active');
   const maxY=new Date().getFullYear()-18;
-  let h=''; for(let y=maxY;y>=1940;y--) h+=`<div class="picker-item ${y===pkY?'selected':''}" onclick="selPk(this,'y',${y})">${y}年</div>`;
+  let h=''; for(let y=maxY;y>=1940;y--) h+=`<div class="picker-item ${y===pkY?'selected':''}" onclick="selPk(this,'y',${y})">${y}</div>`;
   document.getElementById('pk-year').innerHTML=h;
-  h=''; for(let m=1;m<=12;m++) h+=`<div class="picker-item ${m===pkM?'selected':''}" onclick="selPk(this,'m',${m})">${m}月</div>`;
+  h=''; const mNames=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  for(let m=1;m<=12;m++) h+=`<div class="picker-item ${m===pkM?'selected':''}" onclick="selPk(this,'m',${m})">${mNames[m-1]}</div>`;
   document.getElementById('pk-month').innerHTML=h;
   renderDays();
   setTimeout(()=>['pk-year','pk-month','pk-day'].forEach(id=>{const s=document.getElementById(id).querySelector('.selected');if(s) s.scrollIntoView({block:'center',behavior:'smooth'})}),100);
 }
 function renderDays(){
   const max=new Date(pkY,pkM,0).getDate(); if(pkD>max) pkD=max;
-  let h=''; for(let d=1;d<=max;d++) h+=`<div class="picker-item ${d===pkD?'selected':''}" onclick="selPk(this,'d',${d})">${d}日</div>`;
+  let h=''; for(let d=1;d<=max;d++) h+=`<div class="picker-item ${d===pkD?'selected':''}" onclick="selPk(this,'d',${d})">${d}</div>`;
   document.getElementById('pk-day').innerHTML=h;
 }
 function selPk(el,t,v){ el.parentElement.querySelectorAll('.picker-item').forEach(i=>i.classList.remove('selected')); el.classList.add('selected'); if(t==='y'){pkY=v;renderDays();}else if(t==='m'){pkM=v;renderDays();}else pkD=v; }
@@ -1353,7 +1359,7 @@ function selCat(c){
 function renderGrid(){
   const g=document.getElementById('char-grid');
   const f=selectedCat==='推荐'?characters:characters.filter(c=>c.tag===selectedCat);
-  if(!f.length){ g.innerHTML=`<div style="grid-column:1/-1" class="empty-state"><div class="e-icon">🔍</div><div class="e-title">暂无此分类角色</div></div>`; return; }
+  if(!f.length){ g.innerHTML=`<div style="grid-column:1/-1" class="empty-state"><div class="e-icon">🔍</div><div class="e-title">No characters in this category</div></div>`; return; }
   g.innerHTML=f.map((c,i)=>`<div class="char-card" onclick="openDetail(${c.id})" style="animation:fadeUp 0.4s ease ${i*0.06}s both"><div class="card-img"><img src="${c.photo}" alt="${c.name}"><div class="card-gradient"></div></div><div class="card-info"><div class="card-name">${c.name}</div><div class="card-desc">${c.desc}</div><div class="card-chats">💬 ${c.chats}</div></div></div>`).join('');
 }
 
@@ -1364,18 +1370,18 @@ function openDetail(id){
   const b=document.getElementById('d-banner'); b.innerHTML=`<img src="${c.photo}"><div class="banner-grad"></div>`;
   document.getElementById('d-name').textContent=c.name;
   document.getElementById('d-creator').textContent='👤 '+c.creator;
-  document.getElementById('d-chats').textContent='💬 '+c.chats+' 对话';
+  document.getElementById('d-chats').textContent='💬 '+c.chats+' chats';
   document.getElementById('d-tags').innerHTML=(c.tags||[]).map(t=>`<span class="tag" onclick="event.stopPropagation();openTagPage('${t}')">${t}</span>`).join('');
   const ct=document.getElementById('d-content'); ct.textContent=c.persona; ct.style.whiteSpace='pre-wrap';
   navTo('page-detail');
 }
 function showReport(){ document.getElementById('modal-report').classList.add('active'); }
-function submitReport(r){ closeModal('modal-report'); showToast('举报已提交：'+r); }
+function submitReport(r){ closeModal('modal-report'); showToast('Report submitted: '+r); }
 function openTagPage(tag){
   document.getElementById('tag-title').textContent=tag;
   const f=characters.filter(c=>(c.tags||[]).includes(tag));
   const g=document.getElementById('tag-grid');
-  g.innerHTML=f.length?f.map((c,i)=>`<div class="char-card" onclick="openDetail(${c.id})" style="animation:fadeUp 0.4s ease ${i*0.06}s both"><div class="card-img"><img src="${c.photo}" alt="${c.name}"><div class="card-gradient"></div></div><div class="card-info"><div class="card-name">${c.name}</div><div class="card-desc">${c.desc}</div><div class="card-chats">💬 ${c.chats}</div></div></div>`).join(''):`<div style="grid-column:1/-1" class="empty-state"><div class="e-icon">🔍</div><div class="e-title">暂无此标签角色</div></div>`;
+  g.innerHTML=f.length?f.map((c,i)=>`<div class="char-card" onclick="openDetail(${c.id})" style="animation:fadeUp 0.4s ease ${i*0.06}s both"><div class="card-img"><img src="${c.photo}" alt="${c.name}"><div class="card-gradient"></div></div><div class="card-info"><div class="card-name">${c.name}</div><div class="card-desc">${c.desc}</div><div class="card-chats">💬 ${c.chats}</div></div></div>`).join(''):`<div style="grid-column:1/-1" class="empty-state"><div class="e-icon">🔍</div><div class="e-title">No characters with this tag</div></div>`;
   navTo('page-tag');
 }
 
@@ -1423,13 +1429,13 @@ function openChatDetail(id){
 }
 function renderMsgs(){
   const m=document.getElementById('chat-msgs'), cv=convs[curChatId], c=characters.find(x=>x.id===curChatId);
-  if(!cv||!c){ m.innerHTML='<div class="empty-state"><div class="e-icon">📖</div><div class="e-title">开始故事吧</div></div>'; return; }
+  if(!cv||!c){ m.innerHTML='<div class="empty-state"><div class="e-icon">📖</div><div class="e-title">Start the story</div></div>'; return; }
   const hasSent=cv.msgs.some(x=>x.type==='sent');
   let lastDlg=-1;
   if(hasSent) for(let j=cv.msgs.length-1;j>=0;j--) if(cv.msgs[j].type==='dialogue'){lastDlg=j;break;}
-  let h='<div class="story-disclaimer">所有回复均由AI生成。角色均设定为成年人（18岁及以上）</div>';
+  let h='<div class="story-disclaimer">All responses are AI-generated. Characters are set as adults (18+).</div>';
   h+=cv.msgs.map((msg,i)=>{
-    if(msg.type==='narration'){const nid='n-'+i;return`<div class="story-narration collapsed" id="${nid}"><div class="narr-title">${msg.title||''}</div><div class="narr-scene">${msg.scene||''}</div><div class="narr-body"><div class="narr-text">${msg.text}</div></div><div class="narr-toggle"><button class="narr-toggle-btn" onclick="toggleNarr('${nid}')"><span>展开</span><span class="tgl-icon">▼</span></button></div></div>`;}
+    if(msg.type==='narration'){const nid='n-'+i;return`<div class="story-narration collapsed" id="${nid}"><div class="narr-title">${msg.title||''}</div><div class="narr-scene">${msg.scene||''}</div><div class="narr-body"><div class="narr-text">${msg.text}</div></div><div class="narr-toggle"><button class="narr-toggle-btn" onclick="toggleNarr('${nid}')"><span>Expand</span><span class="tgl-icon">▼</span></button></div></div>`;}
     if(msg.type==='dialogue'){return`<div class="dlg-row"><div class="dlg-av"><img src="${c.photo}"></div><div class="dlg-bubble"><div class="dlg-text">${msg.text}</div><div class="dlg-audio">${i===lastDlg?`<button class="dlg-audio-btn" onclick="regenReply(${i})" title="重新生成">🔄</button>`:''}<button class="dlg-audio-btn" onclick="togglePlay(this)">▶️</button></div></div></div>`;}
     if(msg.type==='description') return`<div class="story-desc">${msg.text}</div>`;
     if(msg.type==='sent') return`<div class="msg-sent"><div><div class="msg-bubble">${msg.text}</div></div></div>`;
@@ -1467,22 +1473,22 @@ function togglePlay(b){
 function toggleNarr(id){
   const c=document.getElementById(id); if(!c) return;
   const col=c.classList.contains('collapsed'), btn=c.querySelector('.narr-toggle-btn span:first-child');
-  if(col){c.classList.remove('collapsed');if(btn)btn.textContent='收起'}else{c.classList.add('collapsed');if(btn)btn.textContent='展开'}
+  if(col){c.classList.remove('collapsed');if(btn)btn.textContent='Collapse'}else{c.classList.add('collapsed');if(btn)btn.textContent='Expand'}
 }
 function regenReply(idx){
   const cv=convs[curChatId]; if(!cv) return;
   let rm=idx; for(let i=idx-1;i>=0;i--){if(cv.msgs[i].type==='sent'||cv.msgs[i].type==='narration')break;rm=i;}
-  cv.msgs.splice(rm); renderMsgs(); scrollChat(); showToast('正在重新生成...');
+  cv.msgs.splice(rm); renderMsgs(); scrollChat(); showToast('Regenerating...');
   const c=characters.find(x=>x.id===curChatId);
   setTimeout(()=>{const td=document.createElement('div');td.className='dlg-row';td.id='typing-ind';td.innerHTML=`<div class="dlg-av"><img src="${c?c.photo:''}"></div><div class="dlg-bubble"><div class="msg-typing"><span></span><span></span><span></span></div></div>`;document.getElementById('chat-msgs').appendChild(td);scrollChat()},300);
-  setTimeout(()=>{const t=document.getElementById('typing-ind');if(t)t.remove();const rp=getReply('',curChatId);rp.forEach(m=>cv.msgs.push(m));cv.lastTime=new Date();renderMsgs();scrollChat();showToast('已重新生成')},1200+Math.random()*800);
+  setTimeout(()=>{const t=document.getElementById('typing-ind');if(t)t.remove();const rp=getReply('',curChatId);rp.forEach(m=>cv.msgs.push(m));cv.lastTime=new Date();renderMsgs();scrollChat();showToast('Regenerated')},1200+Math.random()*800);
 }
 
 // ===== LOGOUT =====
 function confirmLogout(){ document.getElementById('modal-logout').classList.add('active'); }
-function doLogout(){ closeModal('modal-logout'); convs={}; favs.clear(); profile={nick:'',sig:'',gender:'',bday:'',avatar:'😊',avType:'emoji'}; pageHist=[]; document.getElementById('page-main').classList.remove('active'); document.getElementById('page-login').classList.add('active'); curPage='page-login'; showToast('已退出'); }
+function doLogout(){ closeModal('modal-logout'); convs={}; favs.clear(); profile={nick:'',sig:'',gender:'',bday:'',avatar:'😊',avType:'emoji'}; pageHist=[]; document.getElementById('page-main').classList.remove('active'); document.getElementById('page-login').classList.add('active'); curPage='page-login'; showToast('Logged out'); }
 function confirmDelAcct(){ document.getElementById('modal-del').classList.add('active'); }
-function doDelAcct(){ closeModal('modal-del'); showToast('账号已注销'); doLogout(); }
+function doDelAcct(){ closeModal('modal-del'); showToast('Account deleted'); doLogout(); }
 
 // ===== UTILS =====
 function closeModal(id){ document.getElementById(id).classList.remove('active'); }
@@ -1492,7 +1498,7 @@ function showToast(msg){
   t.className='toast'; t.textContent=msg; c.appendChild(t);
   setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300)},2500);
 }
-function fmtTime(d){ if(!d)return''; const n=new Date(),df=n-new Date(d); if(df<60000)return'刚刚'; if(df<3600000)return Math.floor(df/60000)+'分钟前'; if(df<86400000){const x=new Date(d);return x.getHours().toString().padStart(2,'0')+':'+x.getMinutes().toString().padStart(2,'0')} return'昨天'; }
+function fmtTime(d){ if(!d)return''; const n=new Date(),df=n-new Date(d); if(df<60000)return'Just now'; if(df<3600000)return Math.floor(df/60000)+'m ago'; if(df<86400000){const x=new Date(d);return x.getHours().toString().padStart(2,'0')+':'+x.getMinutes().toString().padStart(2,'0')} return'Yesterday'; }
 function updateBadge(c){ const b=document.getElementById('chat-badge'); if(c>0){b.style.display='block'}else b.style.display='none'; }
 
 // ===== LANGUAGE =====
