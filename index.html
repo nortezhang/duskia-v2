@@ -8,21 +8,26 @@
 /* ===== DESIGN TOKENS (from Figma) ===== */
 [data-theme='dark'] {
   --bg: #010101;
-  --bg-secondary: #111111;
+  --bg-secondary: #1a1a1a;
   --bg-input: #272727;
   --bg-placeholder: #272727;
   --text: #ffffff;
-  --subtext: #666666;
+  --subtext: #858585;
+  --placeholder: #bcbcbc;
   --divider: #171717;
   --inactive: #2d2d2d;
-  --accent: #ff7a1f;
+  --accent: #ff6800;
+  --accent-2: #ff7a1f;
   --accent-hover: #ff8c3a;
   --green: #00ca48;
   --teal: #028090;
-  --red: #ff3b30;
-  --red-bg: rgba(255, 59, 48, 0.12);
+  --red: #ff1931;
+  --red-bg: rgba(255, 25, 49, 0.12);
   --overlay: rgba(0, 0, 0, 0.7);
   --card-border: #1a1a1a;
+  --white: #fefefe;
+  --overlay-bg: #1a1a1a;
+  --overlay-secondary: #272727;
 }
 [data-theme='light'] {
   --bg: #fefefe;
@@ -31,16 +36,21 @@
   --bg-placeholder: #f5f6f7;
   --text: #0c0c0c;
   --subtext: #858585;
-  --divider: #ebebeb;
+  --placeholder: #bcbcbc;
+  --divider: #f2f2f2;
   --inactive: #d0d0d0;
-  --accent: #ff7a1f;
+  --accent: #ff6800;
+  --accent-2: #ff7a1f;
   --accent-hover: #e86a10;
   --green: #00ca48;
   --teal: #028090;
-  --red: #ff3b30;
-  --red-bg: rgba(255, 59, 48, 0.08);
+  --red: #ff1931;
+  --red-bg: rgba(255, 25, 49, 0.08);
   --overlay: rgba(0, 0, 0, 0.5);
   --card-border: #ebebeb;
+  --white: #fefefe;
+  --overlay-bg: #fefefe;
+  --overlay-secondary: #f5f6f7;
 }
 
 /* Spacing tokens */
@@ -109,42 +119,44 @@ body {
 /* ===== COMMON ===== */
 .page-header {
   display: flex; align-items: center;
-  padding: var(--sp-md) var(--sp-lg);
-  min-height: 48px; position: relative;
+  padding: 14px var(--sp-2xl);
+  height: 60px; position: relative;
   background: var(--bg); z-index: 10;
+  gap: var(--sp-md);
 }
 .page-header .back-btn {
-  width: 32px; height: 32px;
+  width: 28px; height: 28px;
   display: flex; align-items: center; justify-content: center;
   border: none; background: none; color: var(--text);
-  font-size: 18px; cursor: pointer; border-radius: 50%;
+  font-size: 18px; cursor: pointer;
   flex-shrink: 0;
 }
 .page-header .back-btn:active { opacity: 0.6; }
 .page-header .title {
   flex: 1; text-align: center;
-  font-size: 16px; font-weight: 600;
-  margin: 0 32px;
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -0.36px;
 }
 .page-header .header-right {
-  width: 32px; height: 32px;
+  width: 28px; height: 28px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
 
 .page-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
-/* Buttons */
+/* Buttons - Figma: 46px height, pill radius, 18px Demi Bold */
 .btn {
   display: flex; align-items: center; justify-content: center;
-  padding: 14px 24px; border-radius: var(--radius-pill);
-  font-size: 15px; font-weight: 600;
+  height: 46px; padding: 0 var(--sp-2xl);
+  border-radius: var(--radius-pill);
+  font-size: 18px; font-weight: 600;
   border: none; cursor: pointer;
   transition: all 0.15s; gap: var(--sp-sm);
-  letter-spacing: -0.3px;
+  letter-spacing: -0.36px;
 }
 .btn:active { transform: scale(0.97); }
-.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary { background: var(--accent); color: var(--text); }
 .btn-primary:hover { background: var(--accent-hover); }
 .btn-outline {
   background: transparent;
@@ -152,7 +164,7 @@ body {
   color: var(--text);
 }
 .btn-ghost { background: var(--bg-secondary); color: var(--text); }
-.btn-danger { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,59,48,0.15); }
+.btn-danger { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,25,49,0.15); }
 
 /* Avatar */
 .avatar {
@@ -191,17 +203,17 @@ body {
 }
 .modal-overlay.active { display: flex; }
 .modal-box {
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  width: 100%; max-width: 320px;
-  padding: var(--sp-3xl) var(--sp-2xl);
+  background: var(--overlay-bg);
+  border-radius: var(--radius-pill);
+  width: 100%; max-width: 343px;
+  padding: 0;
   animation: bounceIn 0.3s ease;
-  border: 1px solid var(--divider);
+  overflow: hidden;
 }
-.modal-box h3 { font-size: 17px; font-weight: 700; margin-bottom: var(--sp-md); text-align: center; }
-.modal-box p { font-size: 14px; color: var(--subtext); line-height: 1.6; margin-bottom: var(--sp-2xl); text-align: center; }
-.modal-actions { display: flex; gap: var(--sp-md); }
-.modal-actions .btn { flex: 1; padding: 12px; font-size: 14px; }
+.modal-box h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.36px; margin-bottom: 0; text-align: center; padding: var(--sp-lg) var(--sp-2xl) 0; }
+.modal-box p { font-size: 15px; color: var(--subtext); line-height: 1.6; letter-spacing: -0.3px; margin-bottom: 0; text-align: center; padding: var(--sp-lg) var(--sp-2xl); }
+.modal-actions { display: flex; gap: var(--sp-lg); padding: var(--sp-md) var(--sp-2xl) var(--sp-2xl); }
+.modal-actions .btn { flex: 1; font-size: 18px; }
 
 /* Bottom Sheet */
 .sheet-overlay {
@@ -212,45 +224,41 @@ body {
 .sheet-overlay.active { display: block; }
 .sheet {
   position: absolute; bottom: 0; left: 0; right: 0;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: var(--sp-xl) var(--sp-lg);
-  padding-bottom: calc(var(--sp-xl) + var(--safe-bottom));
+  background: var(--overlay-bg);
+  border-radius: var(--radius-pill) var(--radius-pill) 0 0;
+  padding: 0 var(--sp-2xl);
+  padding-bottom: calc(var(--sp-2xl) + var(--safe-bottom));
   animation: sheetUp 0.3s ease;
   max-height: 85vh; overflow-y: auto;
 }
 .sheet .handle {
   width: 36px; height: 4px;
   background: var(--inactive); border-radius: 2px;
-  margin: 0 auto var(--sp-lg);
+  margin: var(--sp-md) auto var(--sp-xl);
 }
 
-/* Tab Bar */
+/* Tab Bar (Figma NavBar) */
 .tab-bar {
-  display: flex; align-items: center; justify-content: space-around;
-  height: var(--tab-h);
+  display: flex; align-items: center; justify-content: center;
+  gap: var(--sp-md);
   background: var(--bg);
   border-top: 1px solid var(--divider);
-  padding-bottom: var(--safe-bottom);
+  padding: var(--sp-3xs) 60px var(--sp-3xl);
   flex-shrink: 0;
 }
 .tab-item {
   display: flex; align-items: center; justify-content: center;
-  width: 48px; height: 48px;
+  padding: var(--sp-md) var(--sp-2xl);
+  height: 56px;
   cursor: pointer; color: var(--subtext);
   transition: color 0.2s; position: relative;
-  border-radius: 50%;
 }
-.tab-item.active { color: var(--accent); }
-.tab-item .tab-icon { font-size: 22px; }
+.tab-item.active { color: var(--text); }
+.tab-item .tab-icon { font-size: 24px; }
 .tab-item .tab-badge {
-  position: absolute; top: 4px; right: 4px;
-  background: var(--accent); color: #fff;
-  font-size: 10px; font-weight: 600;
-  min-width: 16px; height: 16px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 4px;
+  position: absolute; top: 2px; right: 12px;
+  width: 12px; height: 12px;
+  background: var(--accent-2); border-radius: 50%;
 }
 
 /* Form */
@@ -262,20 +270,21 @@ body {
 }
 .form-input {
   width: 100%; padding: 14px var(--sp-lg);
-  background: var(--bg-input); border: 1.5px solid var(--divider);
-  border-radius: var(--radius-md); color: var(--text);
-  font-size: 15px; outline: none; transition: border-color 0.2s;
+  background: var(--bg-secondary); border: none;
+  border-radius: var(--radius-lg); color: var(--text);
+  font-size: 16px; font-weight: 500; outline: none;
+  letter-spacing: -0.32px; transition: box-shadow 0.2s;
 }
-.form-input:focus { border-color: var(--accent); }
-.form-input::placeholder { color: var(--subtext); }
+.form-input:focus { box-shadow: 0 0 0 2px var(--accent); }
+.form-input::placeholder { color: var(--placeholder); }
 .form-textarea { resize: none; height: 80px; font-family: inherit; }
 
 .gender-selector { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
 .gender-option {
   padding: 10px 20px; border-radius: var(--radius-pill);
-  background: var(--bg-input); border: 1.5px solid var(--divider);
-  color: var(--subtext); font-size: 14px;
-  cursor: pointer; transition: all 0.2s;
+  background: var(--bg-secondary); border: none;
+  color: var(--subtext); font-size: 16px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; letter-spacing: -0.32px;
 }
 .gender-option.active {
   background: rgba(255, 122, 31, 0.12);
@@ -312,8 +321,8 @@ body {
 .login-terms a { color: var(--accent); text-decoration: none; cursor: pointer; }
 
 /* ===== DISCOVER ===== */
-.discover-header { padding: var(--sp-lg) var(--sp-xl) 0; }
-.discover-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+.discover-header { padding: 14px var(--sp-xl) 0; height: 60px; display: flex; align-items: center; }
+.discover-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.48px; }
 
 .category-tabs {
   display: flex; gap: var(--sp-sm);
@@ -406,45 +415,63 @@ body {
 .detail-actions { padding: var(--sp-lg) var(--sp-xl); }
 .detail-actions .btn-primary { width: 100%; }
 
-/* ===== CHAT LIST ===== */
-.chat-list-header { padding: var(--sp-lg) var(--sp-xl) 0; }
-.chat-list-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: var(--sp-md); }
+/* ===== CHAT LIST (Figma Messages) ===== */
+.chat-list-header {
+  display: flex; gap: 10px; align-items: center;
+  padding: 14px var(--sp-xl); height: 60px;
+}
+.chat-list-header .cl-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--bg-secondary); overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.chat-list-header .cl-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-list-header h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.48px; flex: 1; }
 .chat-segments {
   display: flex; background: var(--bg-input);
   border-radius: var(--radius-pill); padding: 3px;
-  margin-bottom: var(--sp-md);
+  margin: 0 var(--sp-xl) var(--sp-md);
 }
 .chat-seg {
   flex: 1; padding: var(--sp-sm) var(--sp-lg);
   text-align: center; font-size: 14px; font-weight: 500;
   border-radius: var(--radius-pill);
   cursor: pointer; transition: all 0.2s;
-  color: var(--subtext);
+  color: var(--subtext); letter-spacing: -0.28px;
 }
 .chat-seg.active { background: var(--bg-secondary); color: var(--text); }
 
 .chat-item {
   display: flex; align-items: center;
-  gap: 14px; padding: 14px var(--sp-xl);
+  gap: var(--sp-lg); padding: var(--sp-md) var(--sp-xl);
   cursor: pointer; transition: background 0.15s;
 }
 .chat-item:active { background: var(--bg-secondary); }
 .chat-item .chat-av {
-  width: 52px; height: 52px; border-radius: 50%;
+  width: 48px; height: 48px; border-radius: 50%;
   overflow: hidden; flex-shrink: 0; position: relative;
 }
 .chat-item .chat-av img { width: 100%; height: 100%; object-fit: cover; }
 .chat-item .chat-body { flex: 1; min-width: 0; }
-.chat-item .chat-nm { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.chat-item .chat-nm { font-size: 16px; font-weight: 600; letter-spacing: -0.32px; margin-bottom: 0; }
 .chat-item .chat-pv {
-  font-size: 13px; color: var(--subtext);
+  font-size: 15px; color: var(--subtext); letter-spacing: -0.3px;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .chat-item .chat-meta {
   display: flex; flex-direction: column;
   align-items: flex-end; gap: var(--sp-xs); flex-shrink: 0;
 }
-.chat-item .chat-time { font-size: 11px; color: var(--subtext); }
+.chat-item .chat-time { font-size: 13px; color: var(--subtext); letter-spacing: -0.26px; }
+.chat-item .unread-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent-2);
+}
+.chat-divider {
+  height: 1px; background: var(--divider);
+  margin: 0 var(--sp-2xl) 0 84px;
+}
 
 /* Empty state */
 .empty-state {
@@ -471,20 +498,25 @@ body {
 }
 .chat-header {
   display: flex; align-items: center;
-  padding: 10px var(--sp-md); gap: var(--sp-md);
-  background: rgba(17,17,17,0.6);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(26,26,26,0.5);
+  padding: 14px var(--sp-2xl); gap: var(--sp-md);
+  height: 60px;
+  background: var(--bg);
   position: relative; z-index: 2;
 }
 .chat-header .back-btn {
-  width: 32px; height: 32px;
+  width: 28px; height: 28px;
   display: flex; align-items: center; justify-content: center;
   border: none; background: none; color: var(--text);
-  font-size: 18px; cursor: pointer;
+  font-size: 18px; cursor: pointer; flex-shrink: 0;
 }
-.chat-header .chat-user { flex: 1; }
-.chat-header .chat-user-name { font-size: 16px; font-weight: 600; }
+.chat-header .chat-user { flex: 1; text-align: center; }
+.chat-header .chat-user-name { font-size: 18px; font-weight: 600; letter-spacing: -0.36px; }
+.chat-header .chat-user-sub { font-size: 15px; color: var(--subtext); letter-spacing: -0.3px; }
+.chat-header .chat-av-right {
+  width: 28px; height: 28px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+}
+.chat-header .chat-av-right img { width: 100%; height: 100%; object-fit: cover; }
 
 .chat-msgs {
   flex: 1; overflow-y: auto;
@@ -539,13 +571,11 @@ body {
 .dlg-av { width: 36px; height: 36px; border-radius: var(--radius-md); overflow: hidden; flex-shrink: 0; }
 .dlg-av img { width: 100%; height: 100%; object-fit: cover; }
 .dlg-bubble {
-  background: rgba(2,128,144,0.5);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(2,128,144,0.3);
-  border-radius: var(--radius-lg); border-top-left-radius: 4px;
-  padding: var(--sp-md) 14px; max-width: 80%;
+  background: var(--bg-secondary);
+  border-radius: var(--sp-xl); border-top-left-radius: 4px;
+  padding: 10px 14px; max-width: 80%;
 }
-.dlg-text { font-size: 14px; line-height: 1.6; margin-bottom: var(--sp-xs); }
+.dlg-text { font-size: 16px; font-weight: 500; line-height: 1.5; letter-spacing: -0.32px; margin-bottom: var(--sp-xs); }
 .dlg-audio { display: flex; align-items: center; gap: var(--sp-md); justify-content: flex-end; }
 .dlg-audio-btn {
   background: none; border: none; color: var(--subtext);
@@ -560,10 +590,11 @@ body {
   animation: fadeUp 0.3s ease;
 }
 .msg-sent .msg-bubble {
-  padding: var(--sp-md) var(--sp-lg);
-  border-radius: var(--radius-lg); border-top-right-radius: 4px;
-  background: var(--accent); font-size: 14px; line-height: 1.6;
-  color: #fff;
+  padding: 10px 14px;
+  border-radius: var(--sp-xl); border-top-right-radius: 4px;
+  background: var(--accent); font-size: 16px; font-weight: 500;
+  line-height: 1.5; letter-spacing: -0.32px;
+  color: var(--text);
 }
 
 .msg-typing { display: flex; gap: 4px; padding: 4px 0; }
@@ -574,76 +605,107 @@ body {
 .msg-typing span:nth-child(2) { animation-delay: 0.2s; }
 .msg-typing span:nth-child(3) { animation-delay: 0.4s; }
 
+/* Chat Input (Figma: icon circles + input + send) */
 .chat-input-bar {
-  display: flex; align-items: flex-end;
-  gap: 10px; padding: 10px var(--sp-lg);
-  padding-bottom: calc(10px + var(--safe-bottom));
+  display: flex; align-items: center;
+  gap: var(--sp-md); padding: var(--sp-2xs) var(--sp-xl);
+  padding-bottom: calc(var(--sp-md) + var(--safe-bottom));
   position: relative; z-index: 2;
-  background: rgba(17,17,17,0.6);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(26,26,26,0.5);
+  background: var(--bg);
 }
+.chat-input-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-pill);
+  background: var(--bg-secondary); border: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; flex-shrink: 0;
+  color: var(--text);
+}
+.chat-input-icon:active { opacity: 0.7; }
 .chat-input {
-  flex: 1; padding: var(--sp-md) var(--sp-lg);
-  background: rgba(39,39,39,0.6);
-  border: 1px solid rgba(42,42,42,0.5);
+  flex: 1; padding: 9px var(--sp-md);
+  background: var(--bg-secondary);
+  border: none;
   border-radius: var(--radius-lg); color: var(--text);
-  font-size: 15px; outline: none; resize: none;
-  max-height: 100px; min-height: 44px;
+  font-size: 16px; font-weight: 500; outline: none; resize: none;
+  max-height: 100px; min-height: 40px;
   font-family: inherit; line-height: 1.4;
+  letter-spacing: -0.32px;
 }
-.chat-input::placeholder { color: var(--subtext); }
-.chat-input:focus { border-color: var(--accent); }
+.chat-input::placeholder { color: var(--placeholder); }
 .chat-send {
-  width: 44px; height: 44px; border-radius: 50%;
+  width: 40px; height: 40px; border-radius: var(--radius-pill);
   background: var(--accent); border: none;
-  color: #fff; font-size: 18px; cursor: pointer;
+  color: var(--text); font-size: 18px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; transition: opacity 0.15s;
 }
 .chat-send:disabled { opacity: 0.35; cursor: default; }
 .chat-send:active:not(:disabled) { transform: scale(0.93); }
 
-/* ===== ME PAGE ===== */
-.me-header {
-  padding: var(--sp-2xl) var(--sp-xl);
-  display: flex; align-items: center; gap: var(--sp-lg);
+/* ===== ME PAGE (Figma Profile) ===== */
+.me-profile {
+  padding: 0 var(--sp-xl);
+  display: flex; gap: var(--sp-lg); align-items: center;
+  margin-bottom: var(--sp-2xl);
 }
-.me-info { flex: 1; }
-.me-name { font-size: 20px; font-weight: 700; margin-bottom: 2px; }
-.me-uid { font-size: 12px; color: var(--subtext); margin-bottom: var(--sp-2xs); }
-.me-sig { font-size: 13px; color: var(--subtext); }
-.me-edit {
-  padding: var(--sp-sm) var(--sp-lg);
+.me-avatar-wrap { position: relative; flex-shrink: 0; }
+.me-avatar-wrap .avatar { width: 102px; height: 102px; font-size: 42px; }
+.me-avatar-wrap .emoji-edit {
+  position: absolute; bottom: 0; right: 0;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--accent); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 13px; cursor: pointer;
+  border: 2px solid var(--bg);
+}
+.me-identity { flex: 1; display: flex; flex-direction: column; gap: var(--sp-md); }
+.me-name { font-size: 24px; font-weight: 600; letter-spacing: -0.48px; }
+.me-uid { font-size: 14px; color: var(--subtext); letter-spacing: -0.28px; }
+.me-follow { font-size: 14px; color: var(--subtext); letter-spacing: -0.28px; }
+.me-edit-btn {
+  width: 100%; height: 46px;
   border-radius: var(--radius-pill);
   background: var(--bg-secondary);
-  border: 1px solid var(--divider);
-  color: var(--text); font-size: 13px;
-  font-weight: 500; cursor: pointer;
+  border: none; color: var(--text);
+  font-size: 18px; font-weight: 600;
+  letter-spacing: -0.36px; cursor: pointer;
+  margin: 0 var(--sp-xl) var(--sp-lg);
 }
-.me-edit:active { opacity: 0.7; }
+.me-edit-btn:active { opacity: 0.7; }
 
-.me-section { padding: 0 var(--sp-xl); margin-bottom: var(--sp-lg); }
+/* Figma flat list items */
+.me-section { margin-bottom: 0; }
 .me-section-label {
   font-size: 12px; color: var(--subtext);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: var(--sp-sm); padding: 0 var(--sp-2xs);
+  text-transform: uppercase; letter-spacing: -0.24px;
+  font-weight: 500;
+  padding: var(--sp-xl) var(--sp-3xl) var(--sp-sm);
 }
-.me-menu { background: var(--bg-secondary); border-radius: var(--radius-md); overflow: hidden; }
+.me-menu { background: transparent; border-radius: 0; }
 .me-menu-item {
-  display: flex; align-items: center; gap: 14px;
-  padding: 15px var(--sp-lg); cursor: pointer;
+  display: flex; align-items: center; gap: var(--sp-md);
+  padding: var(--sp-md) var(--sp-2xl); cursor: pointer;
   transition: background 0.15s;
-  border-bottom: 1px solid var(--divider);
 }
-.me-menu-item:last-child { border-bottom: none; }
-.me-menu-item:active { background: var(--bg-input); }
-.me-menu-item .mi-icon { font-size: 18px; width: 24px; text-align: center; }
-.me-menu-item .mi-label { flex: 1; font-size: 15px; }
+.me-menu-item:active { background: var(--bg-secondary); }
+.me-menu-item .mi-icon { font-size: 18px; width: 24px; height: 24px; text-align: center; display: flex; align-items: center; justify-content: center; }
+.me-menu-item .mi-label { flex: 1; font-size: 16px; font-weight: 600; letter-spacing: -0.32px; }
 .me-menu-item .mi-arrow { color: var(--subtext); font-size: 14px; }
-.me-menu-item .mi-value { color: var(--subtext); font-size: 13px; }
+.me-menu-item .mi-value { color: var(--subtext); font-size: 14px; letter-spacing: -0.28px; margin-right: var(--sp-2xs); }
 .me-menu-item.danger .mi-label { color: var(--red); }
 .me-menu-item.danger .mi-icon { color: var(--red); }
+.me-divider {
+  height: 1px; background: var(--divider);
+  margin: var(--sp-2xs) var(--sp-2xl) var(--sp-2xs) 60px;
+}
+.me-footer {
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--sp-md); padding: var(--sp-5xl) var(--sp-5xl) var(--sp-2xl);
+}
+.me-footer .brand { font-size: 16px; font-weight: 700; letter-spacing: 1px; color: var(--subtext); }
+.me-footer .links { display: flex; gap: var(--sp-sm); align-items: center; }
+.me-footer .links span { font-size: 14px; color: var(--placeholder); letter-spacing: -0.28px; cursor: pointer; }
+.me-footer .links span.sep { cursor: default; }
 
 /* ===== ABOUT ===== */
 .about-info {
@@ -866,14 +928,15 @@ body {
         </div>
       </div>
 
-      <!-- TAB: Chats -->
+      <!-- TAB: Chats (Figma Messages) -->
       <div class="tab-page" id="tab-chats" style="position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden">
         <div class="chat-list-header">
+          <div class="cl-avatar" id="cl-user-av">😊</div>
           <h1>聊天</h1>
-          <div class="chat-segments">
-            <div class="chat-seg active" onclick="switchSeg(this,'recent')">最近</div>
-            <div class="chat-seg" onclick="switchSeg(this,'viewed')">看过</div>
-          </div>
+        </div>
+        <div class="chat-segments">
+          <div class="chat-seg active" onclick="switchSeg(this,'recent')">最近</div>
+          <div class="chat-seg" onclick="switchSeg(this,'viewed')">看过</div>
         </div>
         <div class="page-body" id="chat-list-body" style="flex:1">
           <div id="cl-loading" style="display:none">
@@ -893,38 +956,48 @@ body {
         </div>
       </div>
 
-      <!-- TAB: Me -->
+      <!-- TAB: Me (Figma Profile page) -->
       <div class="tab-page" id="tab-me" style="position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden">
+        <div class="page-header">
+          <button class="back-btn" style="visibility:hidden">←</button>
+          <div class="title"></div>
+          <div class="header-right" onclick="navTo('page-about')" style="cursor:pointer;font-size:18px">⚙️</div>
+        </div>
         <div class="page-body" style="flex:1">
-          <div class="me-header">
-            <div class="avatar lg" id="me-av">😊</div>
-            <div class="me-info">
+          <div class="me-profile">
+            <div class="me-avatar-wrap">
+              <div class="avatar" id="me-av">😊</div>
+              <div class="emoji-edit" onclick="openEdit()">✏️</div>
+            </div>
+            <div class="me-identity">
               <div class="me-name" id="me-name">用户</div>
               <div class="me-uid" id="me-uid">ID: 10086</div>
-              <div class="me-sig" id="me-sig">这个人很懒，什么都没写~</div>
-            </div>
-            <button class="me-edit" onclick="openEdit()">编辑资料</button>
-          </div>
-          <div class="me-section">
-            <div class="me-section-label">设置</div>
-            <div class="me-menu">
-              <div class="me-menu-item" onclick="showToast('通知设置开发中')"><span class="mi-icon">🔔</span><span class="mi-label">消息通知</span><span class="mi-arrow">›</span></div>
-              <div class="me-menu-item" onclick="showToast('语言设置开发中')"><span class="mi-icon">🌐</span><span class="mi-label">语言</span><span class="mi-value">简体中文</span><span class="mi-arrow">›</span></div>
+              <div class="me-follow" id="me-sig">这个人很懒，什么都没写~</div>
             </div>
           </div>
-          <div class="me-section">
-            <div class="me-section-label">支持</div>
-            <div class="me-menu">
-              <div class="me-menu-item" onclick="showToast('反馈功能开发中')"><span class="mi-icon">💡</span><span class="mi-label">意见反馈</span><span class="mi-arrow">›</span></div>
-              <div class="me-menu-item" onclick="navTo('page-about')"><span class="mi-icon">ℹ️</span><span class="mi-label">关于 Duskia</span><span class="mi-arrow">›</span></div>
+          <button class="me-edit-btn" onclick="openEdit()">编辑资料</button>
+
+          <div class="me-section-label">账号</div>
+          <div class="me-menu-item" onclick="showToast('通知设置开发中')"><span class="mi-icon">🔔</span><span class="mi-label">消息通知</span><span class="mi-arrow">›</span></div>
+          <div class="me-divider"></div>
+          <div class="me-menu-item" onclick="showToast('语言设置开发中')"><span class="mi-icon">🌐</span><span class="mi-label">语言</span><span class="mi-value">简体中文</span><span class="mi-arrow">›</span></div>
+
+          <div class="me-section-label">其他</div>
+          <div class="me-menu-item" onclick="showToast('反馈功能开发中')"><span class="mi-icon">💡</span><span class="mi-label">意见反馈</span><span class="mi-arrow">›</span></div>
+          <div class="me-divider"></div>
+          <div class="me-menu-item" onclick="navTo('page-about')"><span class="mi-icon">ℹ️</span><span class="mi-label">关于 Duskia</span><span class="mi-arrow">›</span></div>
+
+          <div class="me-section-label">危险区域</div>
+          <div class="me-menu-item danger" onclick="confirmLogout()"><span class="mi-icon">🚪</span><span class="mi-label">退出登录</span></div>
+
+          <div class="me-footer">
+            <div class="brand">DUSKIA</div>
+            <div class="links">
+              <span onclick="showLegal('terms')">条款</span>
+              <span class="sep">|</span>
+              <span onclick="showLegal('privacy')">隐私</span>
             </div>
           </div>
-          <div class="me-section">
-            <div class="me-menu">
-              <div class="me-menu-item danger" onclick="confirmLogout()"><span class="mi-icon">🚪</span><span class="mi-label">退出登录</span></div>
-            </div>
-          </div>
-          <div style="height:20px"></div>
         </div>
       </div>
     </div>
@@ -932,7 +1005,7 @@ body {
     <!-- Tab Bar -->
     <div class="tab-bar">
       <div class="tab-item active" data-tab="discover" onclick="switchTab('discover')"><span class="tab-icon">🔮</span></div>
-      <div class="tab-item" data-tab="chats" onclick="switchTab('chats')"><span class="tab-icon">💬</span><div class="tab-badge" id="chat-badge" style="display:none">0</div></div>
+      <div class="tab-item" data-tab="chats" onclick="switchTab('chats')"><span class="tab-icon">💬</span><div class="tab-badge" id="chat-badge" style="display:none"></div></div>
       <div class="tab-item" data-tab="me" onclick="switchTab('me')"><span class="tab-icon">👤</span></div>
     </div>
   </div>
@@ -970,11 +1043,17 @@ body {
     <div class="chat-hero" id="chat-hero"></div>
     <div class="chat-header">
       <button class="back-btn" onclick="goBack()">←</button>
-      <div class="chat-user"><div class="chat-user-name" id="cd-name">故事名</div></div>
+      <div class="chat-user">
+        <div class="chat-user-name" id="cd-name">故事名</div>
+        <div class="chat-user-sub" id="cd-sub"></div>
+      </div>
+      <div class="chat-av-right" id="cd-avatar"></div>
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
     <div class="chat-input-bar">
-      <textarea class="chat-input" id="chat-inp" placeholder="输入消息..." rows="1" oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
+      <button class="chat-input-icon" onclick="showToast('图片功能开发中')">🖼</button>
+      <button class="chat-input-icon" onclick="showToast('语音功能开发中')">🎤</button>
+      <textarea class="chat-input" id="chat-inp" placeholder="消息" rows="1" oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
       <button class="chat-send" id="chat-send" onclick="sendMsg()" disabled>➤</button>
     </div>
   </div>
@@ -1008,14 +1087,20 @@ body {
     <div class="page-header"><button class="back-btn" onclick="goBack()">←</button><div class="title">关于</div><div class="header-right"></div></div>
     <div class="page-body">
       <div class="about-info"><div class="about-logo">🍷</div><div class="about-name">Duskia</div><div class="about-ver">版本 1.0.0 (Build 2026.11)</div></div>
-      <div class="me-section"><div class="me-menu">
-        <div class="me-menu-item" onclick="showToast('感谢反馈！')"><span class="mi-icon">💡</span><span class="mi-label">意见反馈</span><span class="mi-arrow">›</span></div>
-        <div class="me-menu-item" onclick="showLegal('terms')"><span class="mi-icon">📄</span><span class="mi-label">服务条款</span><span class="mi-arrow">›</span></div>
-        <div class="me-menu-item" onclick="showLegal('privacy')"><span class="mi-icon">🔒</span><span class="mi-label">隐私政策</span><span class="mi-arrow">›</span></div>
-        <div class="me-menu-item" onclick="showToast('已是最新版本')"><span class="mi-icon">🔄</span><span class="mi-label">检查更新</span><span class="mi-value">已是最新</span><span class="mi-arrow">›</span></div>
-      </div></div>
-      <div class="me-section"><div class="me-menu"><div class="me-menu-item danger" onclick="confirmDelAcct()"><span class="mi-icon">⚠️</span><span class="mi-label">注销账号</span><span class="mi-arrow">›</span></div></div></div>
-      <div style="text-align:center;padding:24px;color:var(--subtext);font-size:12px">© 2026 Duskia Inc.</div>
+      <div class="me-section-label">支持</div>
+      <div class="me-menu-item" onclick="showToast('感谢反馈！')"><span class="mi-icon">💡</span><span class="mi-label">意见反馈</span><span class="mi-arrow">›</span></div>
+      <div class="me-divider"></div>
+      <div class="me-menu-item" onclick="showLegal('terms')"><span class="mi-icon">📄</span><span class="mi-label">服务条款</span><span class="mi-arrow">›</span></div>
+      <div class="me-divider"></div>
+      <div class="me-menu-item" onclick="showLegal('privacy')"><span class="mi-icon">🔒</span><span class="mi-label">隐私政策</span><span class="mi-arrow">›</span></div>
+      <div class="me-divider"></div>
+      <div class="me-menu-item" onclick="showToast('已是最新版本')"><span class="mi-icon">🔄</span><span class="mi-label">检查更新</span><span class="mi-value">已是最新</span><span class="mi-arrow">›</span></div>
+      <div class="me-section-label">危险区域</div>
+      <div class="me-menu-item danger" onclick="confirmDelAcct()"><span class="mi-icon">⚠️</span><span class="mi-label">注销账号</span></div>
+      <div class="me-footer">
+        <div class="brand">DUSKIA</div>
+        <div class="links"><span onclick="showLegal('terms')">条款</span><span class="sep">|</span><span onclick="showLegal('privacy')">隐私</span></div>
+      </div>
     </div>
   </div>
 
@@ -1181,6 +1266,8 @@ function updateMe(){
   const av=document.getElementById('me-av');
   if(profile.avType==='image') av.innerHTML=`<img src="${profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
   else av.textContent=profile.avatar;
+  const clAv=document.getElementById('cl-user-av');
+  if(clAv){if(profile.avType==='image') clAv.innerHTML=`<img src="${profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;else clAv.textContent=profile.avatar;}
 }
 
 // ===== BIRTHDAY =====
@@ -1274,13 +1361,13 @@ function renderChatList(){
     ld.style.display='none';
     if(chatSeg==='viewed'){
       if(!viewedChars.length){ ve.style.display='flex'; return; }
-      list.innerHTML=viewedChars.map(id=>{const c=characters.find(x=>x.id===id);if(!c)return'';const cv=convs[id];return`<div class="chat-item" onclick="${cv?'openChatDetail('+c.id+')':'openDetail('+c.id+')'}"><div class="chat-av"><img src="${c.photo}"></div><div class="chat-body"><div class="chat-nm">${c.name}</div><div class="chat-pv">${c.desc}</div></div><div class="chat-meta"><span class="chat-time">${c.tag}</span></div></div>`}).join('');
+      list.innerHTML=viewedChars.map((id,idx)=>{const c=characters.find(x=>x.id===id);if(!c)return'';const cv=convs[id];const divider=idx<viewedChars.length-1?'<div class="chat-divider"></div>':'';return`<div class="chat-item" onclick="${cv?'openChatDetail('+c.id+')':'openDetail('+c.id+')'}"><div class="chat-av"><img src="${c.photo}"></div><div class="chat-body"><div class="chat-nm">${c.name}</div><div class="chat-pv">${c.desc}・${c.tag}</div></div></div>${divider}`}).join('');
       return;
     }
     let cl=Object.values(convs).sort((a,b)=>b.lastTime-a.lastTime);
     if(!cl.length){ empty.style.display='flex'; return; }
     let tu=0;
-    list.innerHTML=cl.map(cv=>{const c=characters.find(x=>x.id===cv.charId);if(!c)return'';const lm=cv.msgs[cv.msgs.length-1];tu+=cv.unread||0;return`<div class="chat-item" onclick="openChatDetail(${c.id})"><div class="chat-av"><img src="${c.photo}"></div><div class="chat-body"><div class="chat-nm">${c.name}</div><div class="chat-pv">${lm?lm.text.substring(0,30):''}</div></div><div class="chat-meta"><span class="chat-time">${fmtTime(cv.lastTime)}</span>${cv.unread>0?`<div class="tab-badge" style="position:static">${cv.unread}</div>`:''}</div></div>`}).join('');
+    list.innerHTML=cl.map((cv,idx)=>{const c=characters.find(x=>x.id===cv.charId);if(!c)return'';const lm=cv.msgs[cv.msgs.length-1];tu+=cv.unread||0;const divider=idx<cl.length-1?'<div class="chat-divider"></div>':'';return`<div class="chat-item" onclick="openChatDetail(${c.id})"><div class="chat-av"><img src="${c.photo}"></div><div class="chat-body"><div class="chat-nm">${c.name}</div><div class="chat-pv">${lm?lm.text.substring(0,30):''}・${fmtTime(cv.lastTime)}</div></div><div class="chat-meta">${cv.unread>0?'<div class="unread-dot"></div>':''}</div></div>${divider}`}).join('');
     updateBadge(tu);
   },300);
 }
@@ -1288,6 +1375,8 @@ function switchSeg(el,s){ chatSeg=s; el.parentElement.querySelectorAll('.chat-se
 function openChatDetail(id){
   curChatId=id; const c=characters.find(x=>x.id===id); if(!c) return;
   document.getElementById('cd-name').textContent=c.name;
+  document.getElementById('cd-sub').textContent=c.desc;
+  document.getElementById('cd-avatar').innerHTML=`<img src="${c.photo}">`;
   document.getElementById('chat-hero').style.backgroundImage=`url('${c.photo}')`;
   if(convs[id]) convs[id].unread=0;
   renderMsgs(); navTo('page-chat-detail');
@@ -1365,7 +1454,7 @@ function showToast(msg){
   setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity 0.3s';setTimeout(()=>t.remove(),300)},2500);
 }
 function fmtTime(d){ if(!d)return''; const n=new Date(),df=n-new Date(d); if(df<60000)return'刚刚'; if(df<3600000)return Math.floor(df/60000)+'分钟前'; if(df<86400000){const x=new Date(d);return x.getHours().toString().padStart(2,'0')+':'+x.getMinutes().toString().padStart(2,'0')} return'昨天'; }
-function updateBadge(c){ const b=document.getElementById('chat-badge'); if(c>0){b.style.display='flex';b.textContent=c>99?'99+':c}else b.style.display='none'; }
+function updateBadge(c){ const b=document.getElementById('chat-badge'); if(c>0){b.style.display='block'}else b.style.display='none'; }
 
 document.addEventListener('DOMContentLoaded',()=>{ document.getElementById('chat-inp').addEventListener('input',function(){document.getElementById('chat-send').disabled=!this.value.trim()}); });
 </script>
