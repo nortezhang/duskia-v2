@@ -166,6 +166,11 @@ body {
 .btn-ghost { background: var(--bg-secondary); color: var(--text); }
 .btn-danger { background: var(--red-bg); color: var(--red); border: 1px solid rgba(255,25,49,0.15); }
 
+/* SVG Icons */
+.icon { width: 24px; height: 24px; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+.icon-sm { width: 16px; height: 16px; }
+.icon-lg { width: 32px; height: 32px; }
+
 /* Avatar */
 .avatar {
   width: 42px; height: 42px; border-radius: 50%;
@@ -173,6 +178,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 18px; flex-shrink: 0; overflow: hidden;
 }
+.avatar.xl { width: 102px; height: 102px; font-size: 42px; }
 .avatar.lg { width: 72px; height: 72px; font-size: 28px; }
 .avatar.sm { width: 36px; height: 36px; font-size: 14px; }
 
@@ -746,7 +752,7 @@ body {
   gap: var(--sp-md); padding: var(--sp-lg) var(--sp-xl);
 }
 
-/* ===== BIRTHDAY PICKER ===== */
+/* ===== BIRTHDAY PICKER (Figma Modal style) ===== */
 .picker-overlay {
   position: fixed; inset: 0;
   background: var(--overlay); z-index: 100;
@@ -754,19 +760,34 @@ body {
 }
 .picker-overlay.active { display: flex; }
 .picker-box {
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--overlay-bg);
+  border-radius: var(--radius-pill) var(--radius-pill) 0 0;
   width: 100%; max-width: 430px; animation: sheetUp 0.3s ease;
+  overflow: hidden;
+}
+.picker-handle {
+  width: 36px; height: 4px; background: var(--inactive);
+  border-radius: 2px; margin: var(--sp-md) auto 0;
 }
 .picker-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--sp-lg) var(--sp-xl);
-  border-bottom: 1px solid var(--divider);
+  display: flex; flex-direction: column; align-items: center;
+  padding: var(--sp-lg) var(--sp-2xl);
 }
-.picker-header .p-cancel { color: var(--subtext); font-size: 15px; cursor: pointer; background: none; border: none; }
-.picker-header .p-confirm { color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; background: none; border: none; }
-.picker-header .p-title { font-size: 16px; font-weight: 600; }
-.picker-wheels { display: flex; height: 200px; overflow: hidden; padding: 0 var(--sp-xl); }
+.picker-header .p-title {
+  font-size: 18px; font-weight: 600; letter-spacing: -0.36px;
+  margin-bottom: var(--sp-2xs);
+}
+.picker-header .p-subtitle {
+  font-size: 15px; color: var(--subtext); letter-spacing: -0.3px;
+}
+.picker-divider {
+  height: 1px; background: var(--divider);
+  margin: 0 var(--sp-2xl);
+}
+.picker-wheels {
+  display: flex; height: 200px; overflow: hidden;
+  padding: var(--sp-lg) var(--sp-2xl);
+}
 .picker-wheel {
   flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
   scroll-snap-type: y mandatory; text-align: center;
@@ -774,10 +795,16 @@ body {
 .picker-wheel::-webkit-scrollbar { display: none; }
 .picker-item {
   height: 40px; display: flex; align-items: center; justify-content: center;
-  font-size: 18px; color: var(--subtext);
+  font-size: 16px; font-weight: 500; color: var(--subtext);
   scroll-snap-align: center; cursor: pointer; transition: all 0.2s;
+  letter-spacing: -0.32px;
 }
-.picker-item.selected { color: var(--text); font-weight: 600; font-size: 20px; }
+.picker-item.selected { color: var(--text); font-weight: 600; font-size: 18px; }
+.picker-actions {
+  display: flex; gap: var(--sp-lg);
+  padding: var(--sp-md) var(--sp-2xl) var(--sp-2xl);
+}
+.picker-actions .btn { flex: 1; }
 
 /* ===== SKELETON ===== */
 .skeleton {
@@ -806,6 +833,24 @@ body {
 <body>
 
 <div id="app">
+  <!-- SVG Icon System (from Figma) -->
+  <svg style="display:none">
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15.169 18.364L8.8137 11.9914L15.1863 5.63604" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" fill="none"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 16 16"><path d="M5.826 12.365L10.186 7.994L5.815 3.635" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" fill="none"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M4.632 7.837C4.941 3.976 8.164 1 12.038 1c3.911 0 7.152 3.032 7.412 6.935l.336 5.037 1.582 1.582.038.048c.743.936.581 2.08.118 2.863-.459.776-1.339 1.438-2.421 1.438H4.899c-1.083 0-1.963-.662-2.422-1.438-.463-.783-.624-1.927.119-2.863l.038-.048 1.587-1.588.411-5.13z" fill="currentColor"/><path d="M14.353 20.572H9.801v.152a2.276 2.276 0 004.552 0v-.152z" fill="currentColor"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 22 22"><path d="M0 11C0 4.925 4.925 0 11 0s11 4.925 11 11-4.925 11-11 11S0 17.075 0 11zm2.625-1.265h3.47c.283-2.387 1.04-4.687 2.217-6.769C5.34 3.961 3.1 6.559 2.625 9.735zM11 3.413a18.4 18.4 0 00-2.354 6.322h4.708A18.4 18.4 0 0011 3.413zm2.354 8.852a18.4 18.4 0 01-2.354 6.322 18.4 18.4 0 01-2.354-6.322h4.708zm-7.26 0H2.625c.476 3.175 2.714 5.774 5.687 6.769a20.5 20.5 0 01-2.218-6.769zm7.594 6.769a20.5 20.5 0 002.218-6.769h3.469c-.476 3.175-2.714 5.774-5.687 6.769zm5.687-9.299h-3.469a20.5 20.5 0 00-2.218-6.769c2.974.994 5.211 3.593 5.687 6.769z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><path d="M18.962 20.517l-4.327-4.326a5.95 5.95 0 01-8.27 0l-4.327 4.326A11 11 0 0018.962 20.517z" fill="currentColor"/><path d="M3.483 5.039L7.809 9.365a5.95 5.95 0 000 5.27L3.483 18.962A11 11 0 013.483 5.039z" fill="currentColor"/><path d="M5.038 3.483l4.327 4.326a5.95 5.95 0 015.27 0l4.327-4.326a11 11 0 00-13.924 0z" fill="currentColor"/><path d="M20.517 5.039l-4.326 4.326a5.95 5.95 0 010 5.27l4.326 4.326A11 11 0 0020.517 5.039z" fill="currentColor"/></symbol>
+    <symbol id="i-feedback" viewBox="0 0 24 24"><path d="M14.285 1.894L6.725 8.255c-3.523 2.964-3.983 8.23-1.026 11.762 2.956 3.533 8.208 3.993 11.731 1.03l1.89-1.59c1.174-.988 1.177-2.923.342-3.921-.657-.786-2.463-1.561-3.674-.542l1.654-1.391c1.174-.988 1.327-2.744.342-3.921-.985-1.177-2.736-1.331-3.91-.343l3.78-3.18c1.174-.988 1.328-2.744.342-3.921-.985-1.177-2.736-1.331-3.91-.343z" fill="currentColor"/><path d="M6.108 2.855a.45.45 0 01.28-.776l.417-.351a2.5 2.5 0 014.573.658l-4.668 3.808-.602-3.339z" fill="currentColor"/></symbol>
+    <symbol id="i-disconnect" viewBox="0 0 25 24"><path d="M20 18.692A5.65 5.65 0 0023.3 13.65c0-3.038-2.463-5.5-5.5-5.5-.25 0-.495.017-.736.049a1.35 1.35 0 01-1.438-.674A7.7 7.7 0 009 3.75 7.7 7.7 0 001.3 11.45c0 2.617 1.305 4.929 3.3 6.32M14.5 15.85l-2.2 2.2m0 0l-2.2 2.2m2.2-2.2l-2.2-2.2m2.2 2.2l2.2 2.2" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><path d="M8.546 10.511l-3.596 5.532c-.967 1.489.1 3.457 1.876 3.457h10.344c1.82 0 2.878-2.057 1.82-3.538l-1.985-2.78a1.05 1.05 0 00-1.392-.245l-1.999 1.333a.35.35 0 01-.407-.063L10.193 10.43c-.433-.542-1.269-.5-1.647.081z" fill="currentColor"/><path d="M18.212 7.042a2.542 2.542 0 11-5.085 0 2.542 2.542 0 015.085 0z" fill="currentColor"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path d="M8.057 7.443a3.943 3.943 0 117.886 0v3.674a3.943 3.943 0 11-7.886 0V7.443zM6.275 10.278a1 1 0 011 1v.256a4.362 4.362 0 004.362 4.362h.474a4.618 4.618 0 004.618-4.618 1 1 0 112 0 6.618 6.618 0 01-6.618 6.618h-.475a6.362 6.362 0 01-6.361-6.362v-.256a1 1 0 011-1zm3.23 9.222a1 1 0 011-1h2.995a1 1 0 110 2h-2.996a1 1 0 01-1-1z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M12 4a1.47 1.47 0 011.037.43l5.119 5.119a1.469 1.469 0 01-2.078 2.078L13.467 9.017V18.53a1.469 1.469 0 11-2.938 0V9.017l-2.61 2.61a1.469 1.469 0 11-2.079-2.078L10.96 4.43A1.47 1.47 0 0112 4z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm-5.5 3.5a5.5 5.5 0 1111 0 5.5 5.5 0 01-11 0z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/><path d="M12 1.5a1.4 1.4 0 00-1.4 1.4v.6a.7.7 0 01-.42.641l-.12.051a.7.7 0 01-.757-.12l-.434-.434a1.4 1.4 0 00-1.98 0L5.638 4.89a1.4 1.4 0 000 1.98l.434.433a.7.7 0 01.12.757l-.05.12A.7.7 0 015.5 8.6h-.6a1.4 1.4 0 00-1.4 1.4v2a1.4 1.4 0 001.4 1.4h.6a.7.7 0 01.641.42l.051.12a.7.7 0 01-.12.757l-.434.434a1.4 1.4 0 000 1.98l1.252 1.251a1.4 1.4 0 001.98 0l.433-.434a.7.7 0 01.757-.12l.12.05a.7.7 0 01.42.642v.6a1.4 1.4 0 001.4 1.4h2a1.4 1.4 0 001.4-1.4v-.6a.7.7 0 01.42-.641l.12-.051a.7.7 0 01.757.12l.434.434a1.4 1.4 0 001.98 0l1.251-1.252a1.4 1.4 0 000-1.98l-.434-.433a.7.7 0 01-.12-.757l.05-.12a.7.7 0 01.642-.42h.6a1.4 1.4 0 001.4-1.4v-2a1.4 1.4 0 00-1.4-1.4h-.6a.7.7 0 01-.641-.42l-.051-.12a.7.7 0 01.12-.757l.434-.434a1.4 1.4 0 000-1.98L18.362 4.89a1.4 1.4 0 00-1.98 0l-.433.434a.7.7 0 01-.757.12l-.12-.05A.7.7 0 0114.6 4.75v-.85A1.4 1.4 0 0013.2 2.5h-1.2z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"/></symbol>
+    <symbol id="i-nav-discover" viewBox="0 0 24 24"><path d="M5.645 5.627L12 12m0 0l6.355 6.373M12 12L5.627 18.355M12 12l6.373-6.355" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="i-nav-chat" viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.03 10-9s-4.477-9-10-9S2 8.03 2 13c0 1.83.505 3.544 1.385 5.01L2 22l5.625-.75A10.3 10.3 0 0012 22z" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="7.5" cy="13" r="1.5" fill="currentColor"/><circle cx="12" cy="13" r="1.5" fill="currentColor"/><circle cx="16.5" cy="13" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-nav-profile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></symbol>
+    <symbol id="i-report" viewBox="0 0 24 24"><path d="M4 4l2 16h12l2-16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 2v6M8 8h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></symbol>
+  </svg>
   <div class="toast-container" id="toast-container"></div>
 
   <!-- LOGIN -->
@@ -839,7 +884,7 @@ body {
   <!-- PRIVACY -->
   <div class="page legal-page" id="page-privacy">
     <div class="page-header">
-      <button class="back-btn" onclick="goBack()">←</button>
+      <button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button>
       <div class="title">隐私政策</div><div class="header-right"></div>
     </div>
     <div class="page-body"><div class="legal-content">
@@ -855,7 +900,7 @@ body {
   <!-- TERMS -->
   <div class="page legal-page" id="page-terms">
     <div class="page-header">
-      <button class="back-btn" onclick="goBack()">←</button>
+      <button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button>
       <div class="title">服务条款</div><div class="header-right"></div>
     </div>
     <div class="page-body"><div class="legal-content">
@@ -959,9 +1004,9 @@ body {
       <!-- TAB: Me (Figma Profile page) -->
       <div class="tab-page" id="tab-me" style="position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden">
         <div class="page-header">
-          <button class="back-btn" style="visibility:hidden">←</button>
+          <button class="back-btn" style="visibility:hidden"><svg class="icon"><use href="#i-back"/></svg></button>
           <div class="title"></div>
-          <div class="header-right" onclick="navTo('page-about')" style="cursor:pointer;font-size:18px">⚙️</div>
+          <div class="header-right" onclick="navTo('page-about')" style="cursor:pointer"><svg class="icon"><use href="#i-gear"/></svg></div>
         </div>
         <div class="page-body" style="flex:1">
           <div class="me-profile">
@@ -978,17 +1023,17 @@ body {
           <button class="me-edit-btn" onclick="openEdit()">编辑资料</button>
 
           <div class="me-section-label">账号</div>
-          <div class="me-menu-item" onclick="showToast('通知设置开发中')"><span class="mi-icon">🔔</span><span class="mi-label">消息通知</span><span class="mi-arrow">›</span></div>
+          <div class="me-menu-item" onclick="showToast('通知设置开发中')"><span class="mi-icon"><svg class="icon"><use href="#i-bell"/></svg></span><span class="mi-label">消息通知</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
           <div class="me-divider"></div>
-          <div class="me-menu-item" onclick="showToast('语言设置开发中')"><span class="mi-icon">🌐</span><span class="mi-label">语言</span><span class="mi-value">简体中文</span><span class="mi-arrow">›</span></div>
+          <div class="me-menu-item" onclick="toggleLang()"><span class="mi-icon"><svg class="icon"><use href="#i-globe"/></svg></span><span class="mi-label">语言</span><span class="mi-value" id="lang-val">简体中文</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
 
           <div class="me-section-label">其他</div>
-          <div class="me-menu-item" onclick="showToast('反馈功能开发中')"><span class="mi-icon">💡</span><span class="mi-label">意见反馈</span><span class="mi-arrow">›</span></div>
+          <div class="me-menu-item" onclick="showToast('反馈功能开发中')"><span class="mi-icon"><svg class="icon"><use href="#i-feedback"/></svg></span><span class="mi-label">意见反馈</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
           <div class="me-divider"></div>
-          <div class="me-menu-item" onclick="navTo('page-about')"><span class="mi-icon">ℹ️</span><span class="mi-label">关于 Duskia</span><span class="mi-arrow">›</span></div>
+          <div class="me-menu-item" onclick="navTo('page-about')"><span class="mi-icon"><svg class="icon"><use href="#i-help"/></svg></span><span class="mi-label">关于 Duskia</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
 
           <div class="me-section-label">危险区域</div>
-          <div class="me-menu-item danger" onclick="confirmLogout()"><span class="mi-icon">🚪</span><span class="mi-label">退出登录</span></div>
+          <div class="me-menu-item danger" onclick="confirmLogout()"><span class="mi-icon"><svg class="icon"><use href="#i-disconnect"/></svg></span><span class="mi-label">退出登录</span></div>
 
           <div class="me-footer">
             <div class="brand">DUSKIA</div>
@@ -1004,18 +1049,18 @@ body {
 
     <!-- Tab Bar -->
     <div class="tab-bar">
-      <div class="tab-item active" data-tab="discover" onclick="switchTab('discover')"><span class="tab-icon">🔮</span></div>
-      <div class="tab-item" data-tab="chats" onclick="switchTab('chats')"><span class="tab-icon">💬</span><div class="tab-badge" id="chat-badge" style="display:none"></div></div>
-      <div class="tab-item" data-tab="me" onclick="switchTab('me')"><span class="tab-icon">👤</span></div>
+      <div class="tab-item active" data-tab="discover" onclick="switchTab('discover')"><svg class="icon icon-lg"><use href="#i-nav-discover"/></svg></div>
+      <div class="tab-item" data-tab="chats" onclick="switchTab('chats')"><svg class="icon icon-lg"><use href="#i-nav-chat"/></svg><div class="tab-badge" id="chat-badge" style="display:none"></div></div>
+      <div class="tab-item" data-tab="me" onclick="switchTab('me')"><svg class="icon icon-lg"><use href="#i-nav-profile"/></svg></div>
     </div>
   </div>
 
   <!-- CHAR DETAIL -->
   <div class="page" id="page-detail">
     <div class="page-header" style="position:absolute;z-index:10;background:transparent">
-      <button class="back-btn" onclick="goBack()" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px)">←</button>
+      <button class="back-btn" onclick="goBack()" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px)"><svg class="icon"><use href="#i-back"/></svg></button>
       <div class="title"></div>
-      <div class="header-right"><button class="back-btn" onclick="showReport()" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px)">🚩</button></div>
+      <div class="header-right"><button class="back-btn" onclick="showReport()" style="background:rgba(0,0,0,0.4);backdrop-filter:blur(8px)">⚠</button></div>
     </div>
     <div class="page-body">
       <div class="detail-banner" id="d-banner"><div class="banner-grad"></div></div>
@@ -1032,7 +1077,7 @@ body {
   <!-- TAG PAGE -->
   <div class="page" id="page-tag">
     <div class="page-header">
-      <button class="back-btn" onclick="goBack()">←</button>
+      <button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button>
       <div class="title" id="tag-title">标签</div><div class="header-right"></div>
     </div>
     <div class="page-body"><div class="cat-more-grid" id="tag-grid"></div></div>
@@ -1042,7 +1087,7 @@ body {
   <div class="page" id="page-chat-detail">
     <div class="chat-hero" id="chat-hero"></div>
     <div class="chat-header">
-      <button class="back-btn" onclick="goBack()">←</button>
+      <button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button>
       <div class="chat-user">
         <div class="chat-user-name" id="cd-name">故事名</div>
         <div class="chat-user-sub" id="cd-sub"></div>
@@ -1051,10 +1096,10 @@ body {
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
     <div class="chat-input-bar">
-      <button class="chat-input-icon" onclick="showToast('图片功能开发中')">🖼</button>
-      <button class="chat-input-icon" onclick="showToast('语音功能开发中')">🎤</button>
+      <button class="chat-input-icon" onclick="showToast('图片功能开发中')"><svg class="icon" style="color:var(--subtext)"><use href="#i-image"/></svg></button>
+      <button class="chat-input-icon" onclick="showToast('语音功能开发中')"><svg class="icon" style="color:var(--subtext)"><use href="#i-mic"/></svg></button>
       <textarea class="chat-input" id="chat-inp" placeholder="消息" rows="1" oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
-      <button class="chat-send" id="chat-send" onclick="sendMsg()" disabled>➤</button>
+      <button class="chat-send" id="chat-send" onclick="sendMsg()" disabled><svg class="icon"><use href="#i-send"/></svg></button>
     </div>
   </div>
 
@@ -1084,19 +1129,19 @@ body {
 
   <!-- ABOUT -->
   <div class="page" id="page-about">
-    <div class="page-header"><button class="back-btn" onclick="goBack()">←</button><div class="title">关于</div><div class="header-right"></div></div>
+    <div class="page-header"><button class="back-btn" onclick="goBack()"><svg class="icon"><use href="#i-back"/></svg></button><div class="title">关于</div><div class="header-right"></div></div>
     <div class="page-body">
       <div class="about-info"><div class="about-logo">🍷</div><div class="about-name">Duskia</div><div class="about-ver">版本 1.0.0 (Build 2026.11)</div></div>
       <div class="me-section-label">支持</div>
-      <div class="me-menu-item" onclick="showToast('感谢反馈！')"><span class="mi-icon">💡</span><span class="mi-label">意见反馈</span><span class="mi-arrow">›</span></div>
+      <div class="me-menu-item" onclick="showToast('感谢反馈！')"><span class="mi-icon"><svg class="icon"><use href="#i-feedback"/></svg></span><span class="mi-label">意见反馈</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
       <div class="me-divider"></div>
-      <div class="me-menu-item" onclick="showLegal('terms')"><span class="mi-icon">📄</span><span class="mi-label">服务条款</span><span class="mi-arrow">›</span></div>
+      <div class="me-menu-item" onclick="showLegal('terms')"><span class="mi-icon"><svg class="icon"><use href="#i-help"/></svg></span><span class="mi-label">服务条款</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
       <div class="me-divider"></div>
-      <div class="me-menu-item" onclick="showLegal('privacy')"><span class="mi-icon">🔒</span><span class="mi-label">隐私政策</span><span class="mi-arrow">›</span></div>
+      <div class="me-menu-item" onclick="showLegal('privacy')"><span class="mi-icon"><svg class="icon"><use href="#i-help"/></svg></span><span class="mi-label">隐私政策</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
       <div class="me-divider"></div>
-      <div class="me-menu-item" onclick="showToast('已是最新版本')"><span class="mi-icon">🔄</span><span class="mi-label">检查更新</span><span class="mi-value">已是最新</span><span class="mi-arrow">›</span></div>
+      <div class="me-menu-item" onclick="showToast('已是最新版本')"><span class="mi-icon"><svg class="icon"><use href="#i-globe"/></svg></span><span class="mi-label">检查更新</span><span class="mi-value">已是最新</span><span class="mi-arrow"><svg class="icon icon-sm"><use href="#i-chevron"/></svg></span></div>
       <div class="me-section-label">危险区域</div>
-      <div class="me-menu-item danger" onclick="confirmDelAcct()"><span class="mi-icon">⚠️</span><span class="mi-label">注销账号</span></div>
+      <div class="me-menu-item danger" onclick="confirmDelAcct()"><span class="mi-icon"><svg class="icon"><use href="#i-disconnect"/></svg></span><span class="mi-label">注销账号</span></div>
       <div class="me-footer">
         <div class="brand">DUSKIA</div>
         <div class="links"><span onclick="showLegal('terms')">条款</span><span class="sep">|</span><span onclick="showLegal('privacy')">隐私</span></div>
@@ -1136,19 +1181,23 @@ body {
     </div>
   </div>
 
-  <!-- BIRTHDAY PICKER -->
+  <!-- BIRTHDAY PICKER (Figma Modal style) -->
   <div class="picker-overlay" id="bday-picker">
     <div class="picker-box">
+      <div class="picker-handle"></div>
       <div class="picker-header">
-        <button class="p-cancel" onclick="closeBday()">取消</button>
         <span class="p-title">选择生日</span>
-        <button class="p-confirm" onclick="confirmBday()">确认</button>
+        <span class="p-subtitle">须年满18周岁方可使用</span>
       </div>
-      <div style="text-align:center;font-size:12px;color:var(--accent);padding:var(--sp-xs) var(--sp-xl) 0">须年满18周岁方可使用</div>
+      <div class="picker-divider"></div>
       <div class="picker-wheels">
         <div class="picker-wheel" id="pk-year"></div>
         <div class="picker-wheel" id="pk-month"></div>
         <div class="picker-wheel" id="pk-day"></div>
+      </div>
+      <div class="picker-actions">
+        <button class="btn btn-ghost" onclick="closeBday()">取消</button>
+        <button class="btn btn-primary" onclick="confirmBday()">确认</button>
       </div>
     </div>
   </div>
@@ -1455,6 +1504,19 @@ function showToast(msg){
 }
 function fmtTime(d){ if(!d)return''; const n=new Date(),df=n-new Date(d); if(df<60000)return'刚刚'; if(df<3600000)return Math.floor(df/60000)+'分钟前'; if(df<86400000){const x=new Date(d);return x.getHours().toString().padStart(2,'0')+':'+x.getMinutes().toString().padStart(2,'0')} return'昨天'; }
 function updateBadge(c){ const b=document.getElementById('chat-badge'); if(c>0){b.style.display='block'}else b.style.display='none'; }
+
+// ===== LANGUAGE =====
+let curLang='zh';
+const langMap={
+  zh:{discover:'发现',chats:'聊天',me:'我的',settings:'设置',about:'关于',notifications:'消息通知',language:'语言',langVal:'简体中文',feedback:'意见反馈',aboutDuskia:'关于 Duskia',logout:'退出登录',deleteAcct:'注销账号',editProfile:'编辑资料',account:'账号',others:'其他',danger:'危险区域',terms:'条款',privacy:'隐私',cancel:'取消',confirm:'确认',save:'保存',send:'消息',birthday:'选择生日',bdaySub:'须年满18周岁方可使用',support:'支持',checkUpdate:'检查更新',upToDate:'已是最新',startStory:'📖 开启故事',recent:'最近',viewed:'看过'},
+  en:{discover:'Discover',chats:'Messages',me:'Profile',settings:'Settings',about:'About',notifications:'Notifications',language:'Language',langVal:'English',feedback:'Leave a Feedback',aboutDuskia:'About Duskia',logout:'Disconnect',deleteAcct:'Delete Account',editProfile:'Edit Name',account:'ACCOUNT',others:'OTHERS',danger:'OTHERS',terms:'Terms',privacy:'Privacy',cancel:'Cancel',confirm:'Confirm',save:'Save',send:'Message',birthday:'Select Birthday',bdaySub:'Must be 18 years or older',support:'SUPPORT',checkUpdate:'Check Update',upToDate:'Latest',startStory:'📖 Start Story',recent:'Recent',viewed:'Viewed'}
+};
+function t(key){return langMap[curLang][key]||key}
+function toggleLang(){
+  curLang=curLang==='zh'?'en':'zh';
+  document.getElementById('lang-val').textContent=t('langVal');
+  showToast(curLang==='zh'?'已切换为中文':'Switched to English');
+}
 
 document.addEventListener('DOMContentLoaded',()=>{ document.getElementById('chat-inp').addEventListener('input',function(){document.getElementById('chat-send').disabled=!this.value.trim()}); });
 </script>
